@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class ProdutoService {
@@ -29,11 +30,31 @@ public class ProdutoService {
             }
             Produto produto = new Produto();
             produto.setNome(currentRow.getCell(0).getStringCellValue());
-            produto.setPreco(currentRow.getCell(1).getNumericCellValue());
+            produto.setValor(currentRow.getCell(1).getNumericCellValue());
             produto.setQuantidade((int) currentRow.getCell(2).getNumericCellValue());
 
             produtoRepository.save(produto);
         }
         workbook.close();
+    }
+
+    public int contarTotalProdutos() {
+        return (int) produtoRepository.count();  // Total de produtos
+    }
+
+    public int contarProdutosAVencer() {
+        return produtoRepository.contarProdutosAVencer();  // Buscar do banco os produtos perto de vencer
+    }
+
+    public int contarEstoqueBaixo() {
+        return produtoRepository.contarEstoqueBaixo();  // Buscar do banco produtos com estoque baixo
+    }
+
+    public double calcularValorTotal() {
+        return produtoRepository.calcularValorTotal();  // Calcular valor total dos produtos
+    }
+
+    public List<Produto> listarProdutosRecentes() {
+        return produtoRepository.findTop5ByOrderByIdDesc();  // Buscar últimos 5 produtos adicionados
     }
 }
