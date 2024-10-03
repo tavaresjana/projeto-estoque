@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload de Planilha</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Upload de Planilha Excel</h2>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <div class="mb-3">
+            <input type="file" name="file" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar Planilha</button>
+    </form>
+
+    <div th:if="${message}" class="alert alert-info mt-3">
+        <p th:text="${message}"></p>
+    </div>
+</div>
+</body>
+</html>
