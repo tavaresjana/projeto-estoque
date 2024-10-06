@@ -2,14 +2,13 @@ package com.projeto.estoque_poc.service;
 
 import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.repository.ProdutoRepository;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -17,6 +16,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
+
+import org.xhtmlrenderer.pdf.ITextRenderer;
+
 
 @Service
 public class ProdutoService {
@@ -72,6 +74,36 @@ public class ProdutoService {
     public List<Produto> buscarTodos() {
         return produtoRepository.findAll(); // Retorna todos os produtos do banco
     }
+
+    public ByteArrayOutputStream gerarPdfProdutos() throws IOException {
+        List<Produto> produtos = produtoRepository.findAll(); // Busca todos os produtos
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+        // Geração de XHTML
+        StringBuilder xhtml = new StringBuilder();
+        xhtml.append("<html><body><h1>Lista de Produtos</h1><table border='1'>");
+        xhtml.append("<tr><th>ID</th><th>Nome</th><th>Quantidade</th><th>Valor</th><th>Data de Validade</th></tr>");
+
+        for (Produto produto : produtos) {
+            xhtml.append("<tr>");
+            xhtml.append("<td>").append(produto.getId()).append("</td>");
+            xhtml.append("<td>").append(produto.getNome()).append("</td>");
+            xhtml.append("<td>").append(produto.getQuantidade()).append("</td>");
+            xhtml.append("<td>").append(produto.getValor()).append("</td>");
+            xhtml.append("<td>").append(produto.getDataValidade() != null ? produto.getDataValidade().toString() : "N/A").append("</td>");
+            xhtml.append("</tr>");
+        }
+        xhtml.append("</table></body></html>");
+
+        // Geração do PDF
+        ITextRenderer renderer = new ITextRenderer();
+        renderer.setDocumentFromString(xhtml.toString());
+        renderer.layout();
+        renderer.createPDF(outputStream);
+
+        return outputStream; // Retorna o ByteArrayOutputStream com o PDF gerado
+    }
+
     public int contarTotalProdutos() {
         return (int) produtoRepository.count();  // Total de produtos
     }

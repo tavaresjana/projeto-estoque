@@ -4,6 +4,9 @@ import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.service.ProdutoService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -62,5 +66,22 @@ public class ProdutoController {
         return "produtos"; // Nome da página HTML
     }
 
+    @GetMapping("/gerar-pdf")
+    public ResponseEntity<byte[]> gerarPdfProdutos() {
+        try {
+            ByteArrayOutputStream pdfStream = produtoService.gerarPdfProdutos();
+            byte[] pdfBytes = pdfStream.toByteArray();
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Content-Type", "application/pdf");
+            headers.add("Content-Disposition", "attachment; filename=produtos.pdf");
+
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+        } catch (IOException e) {
+            e.printStackTrace(); // Tratar o erro de forma mais adequada em produção
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Erro ao gerar PDF".getBytes());
+        }
+    }
 
 }

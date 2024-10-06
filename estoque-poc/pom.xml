@@ -60,18 +60,30 @@
 		</dependency>
 
 			<!-- Apache POI para arquivos .xls -->
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi</artifactId>
-				<version>5.2.3</version> <!-- Verifique a versão mais recente -->
-			</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>5.2.3</version> <!-- Verifique a versão mais recente -->
+		</dependency>
 
-			<!-- Apache POI para arquivos .xlsx -->
-			<dependency>
-				<groupId>org.apache.poi</groupId>
-				<artifactId>poi-ooxml</artifactId>
-				<version>5.2.3</version> <!-- Verifique a versão mais recente -->
-			</dependency>
+		<!-- Apache POI para arquivos .xlsx -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.2.3</version> <!-- Verifique a versão mais recente -->
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.xhtmlrenderer/flying-saucer-pdf -->
+		<dependency>
+			<groupId>org.xhtmlrenderer</groupId>
+			<artifactId>flying-saucer-pdf</artifactId>
+			<version>9.9.5</version>
+		</dependency>
+
+
+
+
+
 
 
 	</dependencies>
