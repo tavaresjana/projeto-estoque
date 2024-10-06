@@ -2,6 +2,7 @@ package com.projeto.estoque_poc.controller;
 
 import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.service.ProdutoService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -52,4 +54,13 @@ public class ProdutoController {
 
         return "dashboard";  // Nome da página que será renderizada
     }
+
+    @GetMapping("/produtos")
+    public String listarProdutos(Model model) {
+        List<Produto> produtos = produtoService.buscarTodos(); // Busca todos os produtos do banco
+        model.addAttribute("produtos", produtos); // Adiciona a lista de produtos ao modelo
+        return "produtos"; // Nome da página HTML
+    }
+
+
 }
