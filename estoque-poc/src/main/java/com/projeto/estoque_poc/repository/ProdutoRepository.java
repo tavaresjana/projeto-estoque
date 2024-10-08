@@ -9,14 +9,16 @@ import java.util.List;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-    @Query("SELECT COUNT(p) FROM Produto p WHERE p.dataValidade < CURRENT_DATE")
-    int contarProdutosAVencer();
+    // Exemplo de método para contar produtos que vencem nos próximos 30 dias
+    int countByDataValidadeBefore(LocalDate data);
 
-    @Query("SELECT COUNT(p) FROM Produto p WHERE p.quantidade < 10")
-    int contarEstoqueBaixo();
+    // Exemplo de método para contar produtos com estoque abaixo de um valor definido
+    int countByQuantidadeLessThan(int quantidade);
 
+    // Exemplo de método para somar o valor total dos produtos
     @Query("SELECT SUM(p.valor * p.quantidade) FROM Produto p")
-    double calcularValorTotal();
+    Double sumValorTotalProdutos();
 
-    List<Produto> findTop5ByOrderByIdDesc();
+    @Query("SELECT SUM(p.quantidade) FROM Produto p")
+    Integer sumQuantidadeTotal();
 }

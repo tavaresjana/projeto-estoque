@@ -44,7 +44,7 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Total de Produtos</h5>
-                            <p class="card-text" th:text="${totalProdutos}">1250</p>
+                            <p class="card-text" th:text="${totalProdutos}"></p> <!-- Aqui o valor do total de produtos -->
                         </div>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Produtos a Vencer</h5>
-                            <p class="card-text" th:text="${produtosVencer}">45</p>
+                            <p class="card-text" th:text="${produtosVencer}"></p> <!-- Aqui o valor de produtos a vencer -->
                         </div>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Estoque Baixo</h5>
-                            <p class="card-text" th:text="${estoqueBaixo}">23</p>
+                            <p class="card-text" th:text="${estoqueBaixo}"></p> <!-- Aqui o valor de produtos com estoque baixo -->
                         </div>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                     <div class="card text-center">
                         <div class="card-body">
                             <h5 class="card-title">Valor Total</h5>
-                            <p class="card-text" th:text="${valorTotal}">R$ 75.000,00</p>
+                            <p class="card-text" th:text="${valorTotal}"></p> <!-- Aqui o valor total dos produtos -->
                         </div>
                     </div>
                 </div>
@@ -109,6 +109,22 @@
                     </button>
                 </div>
             </div>
+<br>
+
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Relatórios</h5>
+                </div>
+                <div class="card-body">
+                    <div class="container mt-5">
+                        <h4>Relatórios em PDF </h4>
+                        <button class="btn btn-outline-secondary" th:onclick="window.location.href='/gerar-pdf'">
+                            Exportar Relatório PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Importar Planilha</h5>

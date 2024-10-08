@@ -72,7 +72,7 @@ public class ProdutoService {
     }
 
     public List<Produto> buscarTodos() {
-        return produtoRepository.findAll(); // Retorna todos os produtos do banco
+        return produtoRepository.findAll();
     }
 
     public ByteArrayOutputStream gerarPdfProdutos() throws IOException {
@@ -105,22 +105,22 @@ public class ProdutoService {
     }
 
     public int contarTotalProdutos() {
-        return (int) produtoRepository.count();  // Total de produtos
+        Integer total = produtoRepository.sumQuantidadeTotal();
+        return (total != null) ? total : 0;
     }
 
     public int contarProdutosAVencer() {
-        return produtoRepository.contarProdutosAVencer();  // Buscar do banco os produtos perto de vencer
+        LocalDate hoje = LocalDate.now();
+        return produtoRepository.countByDataValidadeBefore(hoje.plusDays(30)); // Exemplo: Produtos a vencer nos próximos 30 dias
     }
 
     public int contarEstoqueBaixo() {
-        return produtoRepository.contarEstoqueBaixo();  // Buscar do banco produtos com estoque baixo
+        int limiteEstoqueBaixo = 10;
+        return produtoRepository.countByQuantidadeLessThan(limiteEstoqueBaixo);
     }
 
     public double calcularValorTotal() {
-        return produtoRepository.calcularValorTotal();  // Calcular valor total dos produtos
-    }
-
-    public List<Produto> listarProdutosRecentes() {
-        return produtoRepository.findTop5ByOrderByIdDesc();  // Buscar últimos 5 produtos adicionados
+        Double total = produtoRepository.sumValorTotalProdutos();
+        return (total != null) ? total : 0.0;
     }
 }

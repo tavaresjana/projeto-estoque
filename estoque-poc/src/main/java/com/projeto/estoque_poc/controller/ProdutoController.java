@@ -25,45 +25,38 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-
-    @PostMapping("/upload")
-    public String uploadFile(@RequestParam("file") MultipartFile file, Model model) {
-        try {
-            produtoService.salvarPlanilha(file);
-            model.addAttribute("message", "Planilha enviada e dados salvos com sucesso!");
-        } catch (Exception e) {
-            model.addAttribute("message", "Erro ao processar a planilha: " + e.getMessage());
-        }
-        return "index";
-    }
-
-    @GetMapping("/dashboard")
-    public String mostrarDashboard(Model model) {
-        // Obtendo dados do backend via ProdutoService
+    public String index(Model model) {
         int totalProdutos = produtoService.contarTotalProdutos();
         int produtosVencer = produtoService.contarProdutosAVencer();
         int estoqueBaixo = produtoService.contarEstoqueBaixo();
         double valorTotal = produtoService.calcularValorTotal();
-        List<Produto> produtosRecentes = produtoService.listarProdutosRecentes();
 
-        // Adicionando os dados ao modelo para que Thymeleaf possa renderizá-los
         model.addAttribute("totalProdutos", totalProdutos);
         model.addAttribute("produtosVencer", produtosVencer);
         model.addAttribute("estoqueBaixo", estoqueBaixo);
         model.addAttribute("valorTotal", valorTotal);
-        model.addAttribute("produtosRecentes", produtosRecentes);
 
-        return "dashboard";  // Nome da página que será renderizada
+        return "index";
     }
+
+    @PostMapping("/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
+        try {
+            produtoService.salvarPlanilha(file);
+            model.addAttribute("message", "Planilha enviada e dados salvos com sucesso!");
+            return "redirect:/";
+        } catch (Exception e) {
+            model.addAttribute("message", "Erro ao processar a planilha: " + e.getMessage());
+            return "index";
+        }
+    }
+
 
     @GetMapping("/produtos")
     public String listarProdutos(Model model) {
-        List<Produto> produtos = produtoService.buscarTodos(); // Busca todos os produtos do banco
-        model.addAttribute("produtos", produtos); // Adiciona a lista de produtos ao modelo
-        return "produtos"; // Nome da página HTML
+        List<Produto> produtos = produtoService.buscarTodos();
+        model.addAttribute("produtos", produtos);
+        return "produtos";
     }
 
     @GetMapping("/gerar-pdf")
@@ -83,5 +76,6 @@ public class ProdutoController {
                     .body("Erro ao gerar PDF".getBytes());
         }
     }
+
 
 }
