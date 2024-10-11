@@ -2,26 +2,35 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Produtos</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Lista de Produtos</h1>
-<table>
-  <thead>
-  <tr>
-    <th>Nome</th>
-    <th>Quantidade</th>
-    <th>Valor</th>
-    <th>Data de Validade</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="produto : ${produtos}">
-    <td th:text="${produto.nome}"></td>
-    <td th:text="${produto.quantidade}"></td>
-    <td th:text="${produto.valor}"></td>
-    <td th:text="${produto.dataValidade}"></td>
-  </tr>
-  </tbody>
-</table>
+<div class="container mt-5">
+  <h1 class="mb-4">Lista de Produtos</h1>
+  <table class="table table-bordered">
+    <thead class="thead-light">
+    <tr>
+      <th>Nome</th>
+      <th>Quantidade</th>
+      <th>Valor</th>
+      <th>Data de Validade</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="produto : ${produtos}">
+      <td th:text="${produto.nome}"></td>
+      <td th:text="${produto.quantidade}"></td>
+      <td th:text="${produto.valor}"></td>
+      <td th:text="${produto.dataValidade}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
