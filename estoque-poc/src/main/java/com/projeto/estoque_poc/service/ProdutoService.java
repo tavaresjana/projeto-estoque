@@ -1,5 +1,6 @@
 package com.projeto.estoque_poc.service;
 
+import com.projeto.estoque_poc.exceptions.ProdutoNaoEncontradoException;
 import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.repository.ProdutoRepository;
 import org.apache.poi.ss.usermodel.*;
@@ -122,5 +123,26 @@ public class ProdutoService {
     public double calcularValorTotal() {
         Double total = produtoRepository.sumValorTotalProdutos();
         return (total != null) ? total : 0.0;
+    }
+
+    // Buscar produto por ID
+    public Produto buscarPorId(Long id) {
+        return produtoRepository.findById(id)
+                .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado."));
+    }
+
+    // Atualizar produto
+    public Produto atualizarProduto(Produto produto) {
+        return produtoRepository.save(produto);
+    }
+
+    // Excluir produto
+    public void excluirProduto(Long id) {
+        produtoRepository.deleteById(id);
+    }
+
+    // Listar todos os produtos
+    public List<Produto> listarTodos() {
+        return produtoRepository.findAll();
     }
 }

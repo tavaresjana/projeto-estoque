@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -77,5 +75,25 @@ public class ProdutoController {
         }
     }
 
+    @GetMapping("/produtos/editar/{id}")
+    public String editarProduto(@PathVariable Long id, Model model) {
+        Produto produto = produtoService.buscarPorId(id);
+        model.addAttribute("produto", produto);
+        return "editar-produto"; // página HTML para editar o produto
+    }
+
+    // Atualizar o produto
+    @PostMapping("/produtos/editar")
+    public String atualizarProduto(@ModelAttribute Produto produto) {
+        produtoService.atualizarProduto(produto);
+        return "redirect:/produtos";
+    }
+
+    // Excluir o produto
+    @GetMapping("/produtos/excluir/{id}")
+    public String excluirProduto(@PathVariable Long id) {
+        produtoService.excluirProduto(id);
+        return "redirect:/produtos";
+    }
 
 }

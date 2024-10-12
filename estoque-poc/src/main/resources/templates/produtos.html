@@ -15,6 +15,7 @@
       <th>Quantidade</th>
       <th>Valor</th>
       <th>Data de Validade</th>
+      <th>Ações</th>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +24,13 @@
       <td th:text="${produto.quantidade}"></td>
       <td th:text="${produto.valor}"></td>
       <td th:text="${produto.dataValidade}"></td>
+      <td>
+        <!-- Botão Editar -->
+        <a th:href="@{/produtos/editar/{id}(id=${produto.id})}" class="btn btn-primary btn-sm">Editar</a>
+        <!-- Botão Excluir -->
+        <a th:href="@{/produtos/excluir/{id}(id=${produto.id})}" class="btn btn-danger btn-sm"
+           onclick="return confirm('Tem certeza que deseja excluir este produto?');">Excluir</a>
+      </td>
     </tr>
     </tbody>
   </table>
