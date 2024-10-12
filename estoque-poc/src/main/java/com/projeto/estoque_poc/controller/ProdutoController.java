@@ -96,4 +96,17 @@ public class ProdutoController {
         return "redirect:/produtos";
     }
 
+    // Exibe o formulário para adicionar um novo produto
+    @GetMapping("/produtos/novo")
+    public String exibirFormularioNovoProduto(Model model) {
+        model.addAttribute("produto", new Produto());
+        return "adicionar-produto"; // Nome do template HTML para o formulário
+    }
+
+    // Processa o formulário e adiciona o novo produto
+    @PostMapping("/produtos/novo")
+    public String adicionarProduto(@ModelAttribute Produto produto) {
+        produtoService.salvarProduto(produto);
+        return "redirect:/produtos"; // Redireciona para a lista de produtos após adicionar
+    }
 }

@@ -141,8 +141,8 @@ public class ProdutoService {
         produtoRepository.deleteById(id);
     }
 
-    // Listar todos os produtos
-    public List<Produto> listarTodos() {
-        return produtoRepository.findAll();
+    // Método para salvar um produto
+    public Produto salvarProduto(Produto produto) {
+        return produtoRepository.save(produto);
     }
 }
