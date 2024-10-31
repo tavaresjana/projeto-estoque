@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Produtos Próximos a Vencer</title>
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Produtos Próximos a Vencer</h2>
+
+  <!-- Formulário de busca -->
+  <form method="get" action="/produtos/prox-venc">
+    <div class="form-group">
+      <label for="dias">Quantos dias até o vencimento:</label>
+      <input type="number" id="dias" name="dias" class="form-control" value="0" min="0" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+  </form>
+
+  <!-- Mensagem de alerta -->
+  <div th:if="${mensagem}" class="alert alert-warning mt-3" role="alert">
+    <span th:text="${mensagem}"></span>
+  </div>
+
+  <!-- Lista de produtos -->
+  <table class="table table-bordered mt-3">
+    <thead class="thead-light">
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Data de Vencimento</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="produto : ${produtos}">
+      <td th:text="${produto.id}"></td>
+      <td th:text="${produto.nome}"></td>
+      <td th:text="${#dates.format(produto.dataVencimento, 'dd/MM/yyyy')}"></td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Botão para voltar -->
+  <div class="mt-4">
+    <a href="/home" class="btn btn-primary">Voltar para o Início</a>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

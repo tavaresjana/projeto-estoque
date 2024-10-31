@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -83,8 +84,9 @@ public class ProdutoController {
     }
 
     // Atualizar o produto
-    @PostMapping("/produtos/editar")
-    public String atualizarProduto(@ModelAttribute Produto produto) {
+    @PostMapping("/produtos/editar/{id}")
+    public String atualizarProduto(@PathVariable Long id, @ModelAttribute Produto produto) {
+        produto.setId(id);  // Define o ID para garantir que estamos atualizando o produto correto
         produtoService.atualizarProduto(produto);
         return "redirect:/produtos";
     }
@@ -109,4 +111,8 @@ public class ProdutoController {
         produtoService.salvarProduto(produto);
         return "redirect:/produtos"; // Redireciona para a lista de produtos após adicionar
     }
+
+
+
+
 }
