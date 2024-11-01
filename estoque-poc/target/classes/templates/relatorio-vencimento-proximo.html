@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Relatório de Produtos com Vencimento Próximo</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1 class="mb-4">Relatório de Produtos com Vencimento Próximo</h1>
+
+  <!-- Botão para exibir produtos com vencimento nos próximos 30 dias -->
+  <form th:action="@{/produtos/relatorio-vencimento-proximo-30-dias}" method="get">
+    <button type="submit" class="btn btn-secondary mb-3">Ver produtos que vencem nos próximos 30 dias</button>
+  </form>
+
+  <form th:action="@{/produtos/vencidos}" method="get">
+    <button type="submit" class="btn btn-danger btn-sm">Ver produtos vencidos</button>
+  </form>
+
+
+  <!-- Formulário para inserir a quantidade de dias -->
+  <form th:action="@{/produtos/relatorio-vencimento-proximo}" method="post">
+    <div class="form-group">
+      <label for="dias">Informe a quantidade de dias para verificar o vencimento:</label>
+      <input type="number" id="dias" name="dias" class="form-control" placeholder="Ex: 15" th:value="${dias}">
+    </div>
+    <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+  </form>
+
+  <!-- Tabela de resultados -->
+  <div th:if="${produtosProximosDoVencimento != null}">
+    <h2 class="mt-4">Produtos com vencimento nos próximos <span th:text="${dias}"></span> dias:</h2>
+    <table class="table table-bordered mt-3">
+      <thead class="thead-light">
+      <tr>
+        <th>Nome</th>
+        <th>Quantidade</th>
+        <th>Valor</th>
+        <th>Data de Validade</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="produto : ${produtosProximosDoVencimento}">
+        <td th:text="${produto.nome}"></td>
+        <td th:text="${produto.quantidade}"></td>
+        <td th:text="${produto.valor}"></td>
+        <td th:text="${produto.dataValidade}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Botões Adicionar Produto e Voltar -->
+  <div class="mb-3">
+    <a href="/" class="btn btn-secondary mb-2">Voltar</a>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

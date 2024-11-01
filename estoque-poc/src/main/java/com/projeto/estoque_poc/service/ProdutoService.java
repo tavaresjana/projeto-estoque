@@ -17,6 +17,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -128,12 +129,19 @@ public class ProdutoService {
     // Buscar produto por ID
     public Produto buscarPorId(Long id) {
         return produtoRepository.findById(id)
-                .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado."));
+                .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado. Id:" + id));
     }
 
     // Atualizar produto
     public Produto atualizarProduto(Produto produto) {
-        return produtoRepository.save(produto);
+        // Verifica se o produto existe no banco de dados
+        Optional<Produto> produtoExistente = produtoRepository.findById(produto.getId());
+        if (produtoExistente.isPresent()) {
+            // Atualiza o produto existente
+            return produtoRepository.save(produto);
+        } else {
+            throw new IllegalArgumentException("Produto não encontrado para o ID: " + produto.getId());
+        }
     }
 
     // Excluir produto
@@ -145,4 +153,17 @@ public class ProdutoService {
     public Produto salvarProduto(Produto produto) {
         return produtoRepository.save(produto);
     }
+
+    public List<Produto> produtosComDataDeValidadeProxima(int dias) {
+        LocalDate dataAtual = LocalDate.now();
+        LocalDate dataLimite = dataAtual.plusDays(dias);
+        return produtoRepository.findProdutosComDataDeValidadeProxima(dataAtual, dataLimite);
+    }
+
+    public List<Produto> listarProdutosVencidos() {
+        LocalDate dataAtual = LocalDate.now();
+        return produtoRepository.findProdutosVencidos(dataAtual);
+    }
+
+
 }

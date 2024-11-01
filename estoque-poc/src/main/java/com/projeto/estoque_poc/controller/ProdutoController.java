@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -83,8 +84,9 @@ public class ProdutoController {
     }
 
     // Atualizar o produto
-    @PostMapping("/produtos/editar")
-    public String atualizarProduto(@ModelAttribute Produto produto) {
+    @PostMapping("/produtos/editar/{id}")
+    public String atualizarProduto(@PathVariable Long id, @ModelAttribute Produto produto) {
+        produto.setId(id);  // Define o ID para garantir que estamos atualizando o produto correto
         produtoService.atualizarProduto(produto);
         return "redirect:/produtos";
     }
@@ -109,4 +111,38 @@ public class ProdutoController {
         produtoService.salvarProduto(produto);
         return "redirect:/produtos"; // Redireciona para a lista de produtos após adicionar
     }
+
+
+    // Exibe o formulário de busca
+    @GetMapping("/produtos/relatorio-vencimento-proximo")
+    public String exibirFormularioRelatorio() {
+        return "relatorio-vencimento-proximo";
+    }
+
+    // Processa o formulário e exibe a lista de produtos com vencimento próximo
+    @PostMapping("/produtos/relatorio-vencimento-proximo")
+    public String gerarRelatorioProdutosVencimentoProximo(@RequestParam("dias") int dias, Model model) {
+        List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
+        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+        model.addAttribute("dias", dias); // Passa o valor de dias para exibir no formulário
+        return "relatorio-vencimento-proximo";
+    }
+
+    // Método para exibir produtos com vencimento nos próximos 30 dias
+    @GetMapping("/produtos/relatorio-vencimento-proximo-30-dias")
+    public String gerarRelatorioProdutosVencimentoProximo30Dias(Model model) {
+        int dias = 30; // Define 30 dias como o período fixo
+        List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
+        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+        model.addAttribute("dias", dias); // Passa o valor de 30 dias para exibir no título
+        return "relatorio-vencimento-proximo";
+    }
+
+    @GetMapping("/produtos/vencidos")
+    public String exibirProdutosVencidos(Model model) {
+        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosVencidos();
+        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+        return "relatorio-vencimento-proximo";
+    }
+
 }
