@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titulo}"></title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container mt-5">
+    <h4 class="mb-2">Selecione um Relatório</h4>
+    <form th:action="@{/gerarRelatorio}" method="get" class="form-inline">
+        <div class="form-group">
+            <label for="tipo" class="mr-2">Tipo de Relatório:</label>
+            <select name="tipo" id="tipo" class="form-control mr-2" onchange="updatePrintLink()">
+                <option th:each="tipo : ${tiposRelatorio}" th:value="${tipo}" th:text="${tipo}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+    </form>
+
+    <h4 class="mb-2" th:text="${titulo}"></h4>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Quantidade</th>
+            <th>Valor</th>
+            <th>Data de Validade</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="produto : ${produtos}">
+            <td th:text="${produto.id}"></td>
+            <td th:text="${produto.nome}"></td>
+            <td th:text="${produto.quantidade}"></td>
+            <td th:text="${produto.valor}"></td>
+            <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a id="printLink" th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}" target="_blank" class="btn btn-primary">
+        Imprimir em PDF
+    </a>
+    <a href="/relatorio" class="btn btn-secondary">Voltar</a>
+</div>
+
+<script>
+    function updatePrintLink() {
+        var tipoSelect = document.getElementById("tipo");
+        var selectedTipo = tipoSelect.options[tipoSelect.selectedIndex].value;
+        var printLink = document.getElementById("printLink");
+        printLink.href = '/relatorios/gerar-pdf?tipo=' + encodeURIComponent(selectedTipo);
+    }
+</script>
+</body>
+</html>

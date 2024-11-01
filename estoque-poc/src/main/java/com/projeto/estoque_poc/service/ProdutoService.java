@@ -28,6 +28,7 @@ public class ProdutoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    // salva planilha excel enviada
     public void salvarPlanilha(MultipartFile file) throws IOException {
         Workbook workbook = new XSSFWorkbook(file.getInputStream());
         Sheet sheet = workbook.getSheetAt(0);
@@ -73,10 +74,7 @@ public class ProdutoService {
         workbook.close();
     }
 
-    public List<Produto> buscarTodos() {
-        return produtoRepository.findAll();
-    }
-
+    // gera pdf
     public ByteArrayOutputStream gerarPdfProdutos() throws IOException {
         List<Produto> produtos = produtoRepository.findAll(); // Busca todos os produtos
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -106,6 +104,7 @@ public class ProdutoService {
         return outputStream; // Retorna o ByteArrayOutputStream com o PDF gerado
     }
 
+    // dados da dashbaord
     public int contarTotalProdutos() {
         Integer total = produtoRepository.sumQuantidadeTotal();
         return (total != null) ? total : 0;
@@ -113,7 +112,7 @@ public class ProdutoService {
 
     public int contarProdutosAVencer() {
         LocalDate hoje = LocalDate.now();
-        return produtoRepository.countByDataValidadeBefore(hoje.plusDays(30)); // Exemplo: Produtos a vencer nos próximos 30 dias
+        return produtoRepository.countByDataValidadeBefore(hoje.plusDays(30));
     }
 
     public int contarEstoqueBaixo() {
@@ -126,34 +125,34 @@ public class ProdutoService {
         return (total != null) ? total : 0.0;
     }
 
-    // Buscar produto por ID
+    // crud
+    public List<Produto> buscarTodos() {
+        return produtoRepository.findAll();
+    }
+
     public Produto buscarPorId(Long id) {
         return produtoRepository.findById(id)
                 .orElseThrow(() -> new ProdutoNaoEncontradoException("Produto não encontrado. Id:" + id));
     }
 
-    // Atualizar produto
     public Produto atualizarProduto(Produto produto) {
-        // Verifica se o produto existe no banco de dados
         Optional<Produto> produtoExistente = produtoRepository.findById(produto.getId());
         if (produtoExistente.isPresent()) {
-            // Atualiza o produto existente
             return produtoRepository.save(produto);
         } else {
             throw new IllegalArgumentException("Produto não encontrado para o ID: " + produto.getId());
         }
     }
 
-    // Excluir produto
     public void excluirProduto(Long id) {
         produtoRepository.deleteById(id);
     }
 
-    // Método para salvar um produto
     public Produto salvarProduto(Produto produto) {
         return produtoRepository.save(produto);
     }
 
+    // relatórios
     public List<Produto> produtosComDataDeValidadeProxima(int dias) {
         LocalDate dataAtual = LocalDate.now();
         LocalDate dataLimite = dataAtual.plusDays(dias);
@@ -163,6 +162,10 @@ public class ProdutoService {
     public List<Produto> listarProdutosVencidos() {
         LocalDate dataAtual = LocalDate.now();
         return produtoRepository.findProdutosVencidos(dataAtual);
+    }
+
+    public List<Produto> listarProdutosEstoqueBaixo() {
+        return produtoRepository.findProdutosEstoqueBaixo();
     }
 
 
