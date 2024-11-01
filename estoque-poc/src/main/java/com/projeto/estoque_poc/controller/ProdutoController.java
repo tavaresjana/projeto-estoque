@@ -145,4 +145,11 @@ public class ProdutoController {
         return "relatorio-vencimento-proximo";
     }
 
+    @GetMapping("/produtos/estoque-baixo")
+    public String exibirProdutosEstoqueBaixo(Model model) {
+        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosEstoqueBaixo();
+        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+        return "relatorio-vencimento-proximo";
+    }
+
 }

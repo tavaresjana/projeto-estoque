@@ -8,6 +8,11 @@
 <div class="container mt-5">
   <h1 class="mb-4">Relatório de Produtos com Vencimento Próximo</h1>
 
+  <!-- Botão para exibir produtos com Estoque Baixo -->
+  <form th:action="@{/produtos/estoque-baixo}" method="get">
+    <button type="submit" class="btn btn-secondary mb-3">Ver produtos com Estoque Baixo</button>
+  </form>
+
   <!-- Botão para exibir produtos com vencimento nos próximos 30 dias -->
   <form th:action="@{/produtos/relatorio-vencimento-proximo-30-dias}" method="get">
     <button type="submit" class="btn btn-secondary mb-3">Ver produtos que vencem nos próximos 30 dias</button>
