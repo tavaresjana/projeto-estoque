@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -37,7 +38,13 @@ public class RelatoriosController {
     }
 
     @GetMapping("/gerarRelatorio")
-    public String gerarRelatorio(@RequestParam String tipo, Model model) {
+    public String gerarRelatorio(@RequestParam String tipo, Model model, RedirectAttributes redirectAttributes) {
+
+        if (tipo == null || tipo.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Selecione algo válido.");
+            return "redirect:/relatorio"; // Redireciona para a página de relatórios
+        }
+
         List<Produto> produtos = new ArrayList<>();
         String relatorioTitulo = "";
 
@@ -61,6 +68,9 @@ public class RelatoriosController {
         model.addAttribute("produtos", produtos);
         model.addAttribute("titulo", relatorioTitulo);
         model.addAttribute("tipoRelatorio", tipo);
+
+        model.addAttribute("tiposRelatorio", List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo")); // Adicione sua lógica de tipos de relatórios
+
         return "relatorio";
     }
 

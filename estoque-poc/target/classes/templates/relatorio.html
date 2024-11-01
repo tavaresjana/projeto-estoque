@@ -15,12 +15,19 @@
     <form th:action="@{/gerarRelatorio}" method="get" class="form-inline">
         <div class="form-group">
             <label for="tipo" class="mr-2">Tipo de Relatório:</label>
-            <select name="tipo" id="tipo" class="form-control mr-2" onchange="updatePrintLink()">
-                <option th:each="tipo : ${tiposRelatorio}" th:value="${tipo}" th:text="${tipo}"></option>
+            <select name="tipo" id="tipo" class="form-control mr-2">
+                <option value="">Selecione</option> <!-- Opção de seleção -->
+                <option th:each="tipo : ${tiposRelatorio}"
+                        th:value="${tipo}"
+                        th:text="${tipo}"
+                        th:selected="${tipo == tipoSelecionado}"></option> <!-- Define a opção selecionada -->
             </select>
         </div>
         <button type="submit" class="btn btn-primary">Gerar Relatório</button>
     </form>
+
+    <!-- Exibe a mensagem de erro se existir -->
+    <div th:if="${errorMessage}" class="alert alert-danger mt-2" th:text="${errorMessage}"></div>
 
     <h4 class="mb-2" th:text="${titulo}"></h4>
     <table class="table table-bordered">
@@ -43,14 +50,15 @@
         </tr>
         </tbody>
     </table>
-    <a id="printLink" th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}" target="_blank" class="btn btn-primary">
+    <a id="printLink" th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}" target="_blank" class="btn btn-primary mb-2">
         Imprimir em PDF
     </a>
-    <a href="/relatorio" class="btn btn-secondary">Voltar</a>
+    <a href="/" class="btn btn-secondary mb-2">Voltar</a>
 </div>
 
+
 <script>
-    function updatePrintLink() {
+     function updatePrintLink() {
         var tipoSelect = document.getElementById("tipo");
         var selectedTipo = tipoSelect.options[tipoSelect.selectedIndex].value;
         var printLink = document.getElementById("printLink");
