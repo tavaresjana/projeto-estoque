@@ -23,6 +23,10 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     @Query("SELECT SUM(p.quantidade) FROM Produto p")
     Integer sumQuantidadeTotal();
 
+    //
     @Query("SELECT p FROM Produto p WHERE p.dataValidade BETWEEN :dataAtual AND :dataLimite")
     List<Produto> findProdutosComDataDeValidadeProxima(@Param("dataAtual") LocalDate dataAtual, @Param("dataLimite") LocalDate dataLimite);
+
+    @Query("SELECT p FROM Produto p WHERE p.dataValidade < :dataAtual")
+    List<Produto> findProdutosVencidos(LocalDate dataAtual);
 }

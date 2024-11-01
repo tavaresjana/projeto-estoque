@@ -154,6 +154,16 @@ public class ProdutoService {
         return produtoRepository.save(produto);
     }
 
+    public List<Produto> produtosComDataDeValidadeProxima(int dias) {
+        LocalDate dataAtual = LocalDate.now();
+        LocalDate dataLimite = dataAtual.plusDays(dias);
+        return produtoRepository.findProdutosComDataDeValidadeProxima(dataAtual, dataLimite);
+    }
+
+    public List<Produto> listarProdutosVencidos() {
+        LocalDate dataAtual = LocalDate.now();
+        return produtoRepository.findProdutosVencidos(dataAtual);
+    }
 
 
 }
