@@ -35,6 +35,9 @@ public class ProdutoController {
         model.addAttribute("estoqueBaixo", estoqueBaixo);
         model.addAttribute("valorTotal", valorTotal);
 
+        List<Produto> produtosRecentes = produtoService.buscarPorProdutosRecentes();
+        model.addAttribute("produtosRecentes", produtosRecentes);
+
         return "index";
     }
 
@@ -150,6 +153,12 @@ public class ProdutoController {
         List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosEstoqueBaixo();
         model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
         return "relatorio-vencimento-proximo";
+    }
+
+    @GetMapping("/produtos/buscar")
+    public String buscarProduto(@RequestParam String nome, Model model) {
+        model.addAttribute("produtos", produtoService.buscarPorNome(nome));
+        return "produtos"; // nome da sua página HTML
     }
 
 }

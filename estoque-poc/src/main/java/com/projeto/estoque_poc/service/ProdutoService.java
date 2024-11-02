@@ -6,7 +6,9 @@ import com.projeto.estoque_poc.repository.ProdutoRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -15,9 +17,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -167,6 +171,16 @@ public class ProdutoService {
     public List<Produto> listarProdutosEstoqueBaixo() {
         return produtoRepository.findProdutosEstoqueBaixo();
     }
+
+    public List<Produto> buscarPorProdutosRecentes() {
+        List<Produto> listaProdutosRecentes = produtoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        return listaProdutosRecentes.stream().limit(3).collect(Collectors.toList());
+    }
+
+    public List<Produto> buscarPorNome(String nome) {
+        return produtoRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
 
 
 }

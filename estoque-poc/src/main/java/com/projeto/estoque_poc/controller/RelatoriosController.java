@@ -27,6 +27,7 @@ public class RelatoriosController {
     @Autowired
     private ProdutoService produtoService;
 
+    //pagina html relatorio
     @GetMapping("/relatorio")
     public String relatorios(Model model) {
         model.addAttribute("tiposRelatorio", new String[]{
@@ -77,6 +78,83 @@ public class RelatoriosController {
 
     @GetMapping("/relatorios/gerar-pdf")
     public ResponseEntity<byte[]> gerarPdf(@RequestParam String tipo) {
+        ByteArrayOutputStream pdfStream;
+        switch (tipo) {
+            case "Vencimento Próximos 30 Dias":
+                pdfStream = relatoriosService.gerarPdfProdutosVencimentoProximo30Dias();
+                break;
+            case "Produtos Vencidos":
+                pdfStream = relatoriosService.gerarPdfProdutosVencidos();
+                break;
+            case "Estoque Baixo":
+                pdfStream = relatoriosService.gerarPdfProdutosEstoqueBaixo();
+                break;
+            default:
+                return ResponseEntity.badRequest().build();
+        }
+
+        byte[] pdfBytes = pdfStream.toByteArray();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/pdf");
+        headers.add("Content-Disposition", "attachment; filename=" + tipo.replaceAll(" ", "_") + ".pdf");
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+    }
+
+
+    /*******************
+    * pagina html index *
+    *******************/
+
+    @GetMapping("/relatorio-index")
+    public String relatoriosIndex(Model model) {
+        model.addAttribute("tiposRelatorio", new String[]{
+                "Vencimento Próximos 30 Dias",
+                "Produtos Vencidos",
+                "Estoque Baixo"
+        });
+        return "index";
+    }
+
+    @GetMapping("/gerarRelatorio-index")
+    public String gerarRelatorioIndex(@RequestParam String tipo, Model model, RedirectAttributes redirectAttributes) {
+
+        if (tipo == null || tipo.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Selecione algo válido.");
+            return "redirect:/relatorio"; // Redireciona para a página de relatórios
+        }
+
+        List<Produto> produtos = new ArrayList<>();
+        String relatorioTitulo = "";
+
+        switch (tipo) {
+            case "Vencimento Próximos 30 Dias":
+                produtos = produtoService.produtosComDataDeValidadeProxima(30);
+                relatorioTitulo = "Relatório de Produtos com Vencimento nos Próximos 30 Dias";
+                break;
+            case "Produtos Vencidos":
+                produtos = produtoService.listarProdutosVencidos();
+                relatorioTitulo = "Relatório de Produtos Vencidos";
+                break;
+            case "Estoque Baixo":
+                produtos = produtoService.listarProdutosEstoqueBaixo();
+                relatorioTitulo = "Relatório de Produtos com Estoque Baixo";
+                break;
+            default:
+                break;
+        }
+
+        model.addAttribute("produtos", produtos);
+        model.addAttribute("titulo", relatorioTitulo);
+        model.addAttribute("tipoRelatorio", tipo);
+
+        model.addAttribute("tiposRelatorio", List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo")); // Adicione sua lógica de tipos de relatórios
+
+        return "index";
+    }
+
+    @GetMapping("/relatorios/gerar-pdf-index")
+    public ResponseEntity<byte[]> gerarPdfIndex(@RequestParam String tipo) {
         ByteArrayOutputStream pdfStream;
         switch (tipo) {
             case "Vencimento Próximos 30 Dias":

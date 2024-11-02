@@ -35,4 +35,6 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
     // busca produtos com estoque baixo
     @Query("SELECT p FROM Produto p WHERE p.quantidade < 10")
     List<Produto> findProdutosEstoqueBaixo();
+
+    List<Produto> findByNomeContainingIgnoreCase(String nome);
 }
