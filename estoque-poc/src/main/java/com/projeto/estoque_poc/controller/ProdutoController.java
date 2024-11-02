@@ -179,4 +179,18 @@ public class ProdutoController {
         return "produtos"; // nome da sua página HTML
     }
 
+    // Método para entrada de produto
+    @PostMapping("/produtos/entrada/{id}")
+    public String adicionarQuantidade(@PathVariable Long id, @RequestParam int quantidade) {
+        produtoService.adicionarQuantidade(id, quantidade);
+        return "redirect:/produtos"; // redireciona para a página de produtos
+    }
+
+    // Método para saída de produto
+    @PostMapping("/produtos/saida/{id}")
+    public String subtrairQuantidade(@PathVariable Long id, @RequestParam int quantidade) {
+        produtoService.subtrairQuantidade(id, quantidade);
+        return "redirect:/produtos"; // redireciona para a página de produtos
+    }
+
 }
