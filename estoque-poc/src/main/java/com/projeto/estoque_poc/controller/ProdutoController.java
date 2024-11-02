@@ -155,4 +155,10 @@ public class ProdutoController {
         return "relatorio-vencimento-proximo";
     }
 
+    @GetMapping("/produtos/buscar")
+    public String buscarProduto(@RequestParam String nome, Model model) {
+        model.addAttribute("produtos", produtoService.buscarPorNome(nome));
+        return "produtos"; // nome da sua página HTML
+    }
+
 }

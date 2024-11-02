@@ -8,6 +8,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -175,6 +176,11 @@ public class ProdutoService {
         List<Produto> listaProdutosRecentes = produtoRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
         return listaProdutosRecentes.stream().limit(3).collect(Collectors.toList());
     }
+
+    public List<Produto> buscarPorNome(String nome) {
+        return produtoRepository.findByNomeContainingIgnoreCase(nome);
+    }
+
 
 
 }

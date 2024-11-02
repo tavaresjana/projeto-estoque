@@ -9,6 +9,12 @@
 <div class="container mt-5">
   <h1 class="mb-4">Lista de Produtos</h1>
 
+  <form action="#" th:action="@{/produtos/buscar}" method="get" class="form-inline mb-4">
+    <input type="text" name="nome" class="form-control mr-2" placeholder="Pesquisar por nome" required>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a href="/produtos" class="btn btn-danger ml-2">X</a>
+  </form>
+
   <table class="table table-bordered">
     <thead class="thead-light">
     <tr>
