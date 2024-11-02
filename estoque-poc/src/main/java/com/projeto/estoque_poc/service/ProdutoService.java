@@ -181,6 +181,23 @@ public class ProdutoService {
         return produtoRepository.findByNomeContainingIgnoreCase(nome);
     }
 
+    public void adicionarQuantidade(Long id, int quantidade) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        produto.setQuantidade(produto.getQuantidade() + quantidade);
+        produtoRepository.save(produto);
+    }
+
+    public void subtrairQuantidade(Long id, int quantidade) {
+        Produto produto = produtoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        int novaQuantidade = produto.getQuantidade() - quantidade;
+        if (novaQuantidade < 0) {
+            throw new RuntimeException("Quantidade não pode ser negativa");
+        }
+        produto.setQuantidade(novaQuantidade);
+        produtoRepository.save(produto);
+    }
 
 
 }
