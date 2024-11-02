@@ -97,7 +97,8 @@
                             <td th:text="${produto.dataValidade}"></td>
                             <td>
                                 <a class="btn btn-sm btn-primary" th:href="@{/produtos/editar/{id}(id=${produto.id})}">Editar</a>
-                                <a class="btn btn-sm btn-danger" th:href="@{/produtos/deletar/{id}(id=${produto.id})}">Excluir</a>
+                                <a class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este produto?');"
+                                   th:href="@{/produtos/excluir/{id}(id=${produto.id})}">Excluir</a>
                             </td>
                         </tr>
                         </tbody>
