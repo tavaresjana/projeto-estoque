@@ -35,6 +35,9 @@ public class ProdutoController {
         model.addAttribute("estoqueBaixo", estoqueBaixo);
         model.addAttribute("valorTotal", valorTotal);
 
+        List<Produto> produtosRecentes = produtoService.buscarPorProdutosRecentes();
+        model.addAttribute("produtosRecentes", produtosRecentes);
+
         return "index";
     }
 
