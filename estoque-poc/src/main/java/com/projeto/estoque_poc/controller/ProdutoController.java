@@ -11,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,13 +120,25 @@ public class ProdutoController {
 
     // Exibe o formulário de busca
     @GetMapping("/produtos/relatorio-vencimento-proximo")
-    public String exibirFormularioRelatorio() {
+    public String exibirFormularioRelatorio(Model model) {
+        List<String> tiposRelatorio = List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo");
+        model.addAttribute("tiposRelatorio", tiposRelatorio);
         return "relatorio";
     }
 
     // Processa o formulário e exibe a lista de produtos com vencimento próximo
     @PostMapping("/produtos/relatorio-vencimento-proximo")
-    public String gerarRelatorioProdutosVencimentoProximo(@RequestParam("dias") int dias, Model model) {
+    public String gerarRelatorioProdutosVencimentoProximo(@RequestParam(value = "dias", required = false) Integer dias, Model model, RedirectAttributes redirectAttributes) {
+
+        if (dias == null || dias <= 0) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Por favor, informe uma quantidade de dias válida.");
+
+            List<String> tiposRelatorio = List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo");
+            model.addAttribute("tiposRelatorio", tiposRelatorio);
+
+            return "redirect:/produtos/relatorio-vencimento-proximo"; // Redireciona para exibir o formulário
+        }
+
         List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
         model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
         model.addAttribute("dias", dias); // Passa o valor de dias para exibir no formulário

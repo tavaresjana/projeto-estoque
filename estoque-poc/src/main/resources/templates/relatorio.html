@@ -28,100 +28,118 @@
         </div>
         <div class="col-10">
             <div class="container mt-5">
-                <!-- Primeiro Card -->
-                <div class="card mb-4">
+                <!-- Card Principal -->
+                <div class="card">
                     <div class="card-header">
                         <h4 class="mb-0">Relatórios</h4>
                     </div>
                     <div class="card-body">
-                        <form class="form-inline" method="get" th:action="@{/gerarRelatorio}">
-                            <div class="form-group">
-                                <label class="mr-2" for="tipo">Tipo de Relatório:</label>
-                                <select class="form-control mr-2" id="tipo" name="tipo">
-                                    <option value="">Selecione</option>
-                                    <option th:each="tipo : ${tiposRelatorio}"
-                                            th:value="${tipo}"
-                                            th:text="${tipo}"></option>
-                                </select>
+                        <!-- Primeiro Card -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Relatório Geral</h5>
+                            </div>
+                            <div class="card-body">
+                                <form class="form-inline" method="get" th:action="@{/gerarRelatorio}">
+                                    <div class="form-group">
+                                        <label class="mr-2" for="tipo">Tipo de Relatório:</label>
+                                        <select class="form-control mr-2" id="tipo" name="tipo">
+                                            <option value="">Selecione</option>
+                                            <option th:each="tipo : ${tiposRelatorio}" th:text="${tipo}"
+                                                    th:value="${tipo}"></option>
+                                        </select>
+                                    </div>
+                                    <button class="btn btn-primary" type="submit">Gerar Relatório</button>
+                                </form>
+                                <div class="alert alert-danger mt-2" th:if="${errorMessage1}"
+                                     th:text="${errorMessage1}"></div>
+                                <h4 class="mb-2" th:text="${titulo}"></h4>
 
-
+                                <!-- Tabela de Relatório -->
+                                <table class="table table-bordered">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Quantidade</th>
+                                        <th>Valor</th>
+                                        <th>Data de Validade</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="produto : ${produtos}">
+                                        <td th:text="${produto.id}"></td>
+                                        <td th:text="${produto.nome}"></td>
+                                        <td th:text="${produto.quantidade}"></td>
+                                        <td th:text="${produto.valor}"></td>
+                                        <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <a class="btn btn-primary mb-2" id="printLink" target="_blank"
+                                   th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}">
+                                    Imprimir em PDF
+                                </a>
 
                             </div>
-                            <button class="btn btn-primary" type="submit">Gerar Relatório</button>
-                        </form>
-                        <div class="alert alert-danger mt-2" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-                        <h4 class="mb-2" th:text="${titulo}"></h4>
-                        <table class="table table-bordered">
-                            <thead class="thead-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Nome</th>
-                                <th>Quantidade</th>
-                                <th>Valor</th>
-                                <th>Data de Validade</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="produto : ${produtos}">
-                                <td th:text="${produto.id}"></td>
-                                <td th:text="${produto.nome}"></td>
-                                <td th:text="${produto.quantidade}"></td>
-                                <td th:text="${produto.valor}"></td>
-                                <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <a class="btn btn-primary mb-2" id="printLink" target="_blank"
-                           th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}">
-                            Imprimir em PDF
-                        </a>
+                        </div>
+
+                        <!-- Segundo Card -->
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h5>Relatório de Vencimento de Produtos</h5>
+                            </div>
+                            <div class="card-body">
+                                <form th:action="@{/produtos/relatorio-vencimento-proximo}" method="post">
+                                    <div class="form-group">
+                                        <label for="dias">Informe a quantidade de dias para verificar o vencimento:</label>
+                                        <div class="input-group">
+                                            <input type="number" id="dias" name="dias" class="form-control" placeholder="Ex: 15" th:value="${dias}">
+                                            <div class="input-group-append">
+                                                <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="alert alert-danger mt-2" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+
+                                <h4 class="mb-2" th:text="${titulo}"></h4>
+
+                                <div th:if="${produtosProximosDoVencimento != null}">
+                                    <h4 class="mt-4">Produtos com vencimento nos próximos <span th:text="${dias}"></span> dias:</h4>
+                                    <table class="table table-bordered mt-3">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th>Nome</th>
+                                            <th>Quantidade</th>
+                                            <th>Valor</th>
+                                            <th>Data de Validade</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="produto : ${produtosProximosDoVencimento}">
+                                            <td th:text="${produto.nome}"></td>
+                                            <td th:text="${produto.quantidade}"></td>
+                                            <td th:text="${produto.valor}"></td>
+                                            <td th:text="${produto.dataValidade}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="text-right mr-3">
                         <a class="btn btn-secondary mb-2" href="/">Voltar</a>
                     </div>
                 </div>
 
-                <!-- Segundo Card -->
-                <div class="card mt-4">
-                    <div class="card-header">
-                        <h4>Relatório de Vencimento de Produtos</h4>
-                    </div>
-                    <div class="card-body">
-                        <form th:action="@{/produtos/relatorio-vencimento-proximo}" method="post">
-                            <div class="form-group">
-                                <label for="dias">Informe a quantidade de dias para verificar o vencimento:</label>
-                                <input type="number" id="dias" name="dias" class="form-control" placeholder="Ex: 15" th:value="${dias}">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Gerar Relatório</button>
-                        </form>
-
-                        <div th:if="${produtosProximosDoVencimento != null}">
-                            <h4 class="mt-4">Produtos com vencimento nos próximos <span th:text="${dias}"></span> dias:</h4>
-                            <table class="table table-bordered mt-3">
-                                <thead class="thead-light">
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Quantidade</th>
-                                    <th>Valor</th>
-                                    <th>Data de Validade</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="produto : ${produtosProximosDoVencimento}">
-                                    <td th:text="${produto.nome}"></td>
-                                    <td th:text="${produto.quantidade}"></td>
-                                    <td th:text="${produto.valor}"></td>
-                                    <td th:text="${produto.dataValidade}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div class="mt-3">
-                            <a href="/" class="btn btn-secondary mb-2">Voltar</a>
-                        </div>
-                    </div>
-                </div>
             </div>
+
         </div>
+
+
     </div>
 </div>
 

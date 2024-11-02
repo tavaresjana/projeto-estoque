@@ -39,7 +39,7 @@ public class RelatoriosController {
     public String gerarRelatorio(@RequestParam String tipo, Model model, RedirectAttributes redirectAttributes) {
 
         if (tipo == null || tipo.isEmpty()) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Selecione algo válido.");
+            redirectAttributes.addFlashAttribute("errorMessage1", "Selecione um tipo válido.");
             return "redirect:/relatorio"; // Redireciona para exibir o formulário
         }
 
