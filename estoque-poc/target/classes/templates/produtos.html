@@ -3,52 +3,82 @@
 <head>
   <title>Produtos</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
-  <h1 class="mb-4">Lista de Produtos</h1>
 
-  <form action="#" th:action="@{/produtos/buscar}" method="get" class="form-inline mb-4">
-    <input type="text" name="nome" class="form-control mr-2" placeholder="Pesquisar por nome" required>
-    <button type="submit" class="btn btn-primary">Buscar</button>
-    <a href="/produtos" class="btn btn-danger ml-2">X</a>
-  </form>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2 bg-dark text-light vh-100">
+      <h4 class="my-4 text-center">Menu</h4>
+      <ul class="nav flex-column">
 
-  <table class="table table-bordered">
-    <thead class="thead-light">
-    <tr>
-      <th>Nome</th>
-      <th>Quantidade</th>
-      <th>Valor</th>
-      <th>Data de Validade</th>
-      <th>Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="produto : ${produtos}">
-      <td th:text="${produto.nome}"></td>
-      <td th:text="${produto.quantidade}"></td>
-      <td th:text="${produto.valor}"></td>
-      <td th:text="${produto.dataValidade}"></td>
-      <td>
-        <!-- Botão Editar -->
-        <a th:href="@{/produtos/editar/{id}(id=${produto.id})}" class="btn btn-primary btn-sm">Editar</a>
-        <!-- Botão Excluir -->
-        <a th:href="@{/produtos/excluir/{id}(id=${produto.id})}" class="btn btn-danger btn-sm"
-           onclick="return confirm('Tem certeza que deseja excluir este produto?');">Excluir</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+        <li class="nav-item">
+          <a class="nav-link text-light" th:href="@{/}">Home</a>
+        </li>
 
-  <!-- Botões Adicionar Produto e Voltar -->
-  <div class="mb-3">
-    <a href="/produtos/novo" class="btn btn-success mb-2">Adicionar Novo Produto</a>
-    <a href="/" class="btn btn-secondary mb-2">Voltar</a>
+        <li class="nav-item">
+          <a class="nav-link text-light" th:href="@{/produtos}">Produtos</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link text-light" th:href="@{/relatorio}">Relatórios</a>
+        </li>
+
+      </ul>
+    </div>
+    <div class="col-10">
+      <div class="container mt-5">
+        <div class="card"> <!-- Início do card -->
+          <div class="card-header">
+            <h4 class="mb-0">Lista de Produtos</h4>
+          </div>
+          <div class="card-body"> <!-- Corpo do card -->
+            <form action="#" class="form-inline mb-4" method="get" th:action="@{/produtos/buscar}">
+              <input class="form-control mr-2" name="nome" placeholder="Pesquisar por nome" required type="text">
+              <button class="btn btn-primary" type="submit">Buscar</button>
+              <a class="btn btn-danger ml-2" href="/produtos">X</a>
+            </form>
+
+            <table class="table table-bordered">
+              <thead class="thead-light">
+              <tr>
+                <th>Nome</th>
+                <th>Quantidade</th>
+                <th>Valor</th>
+                <th>Data de Validade</th>
+                <th>Ações</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="produto : ${produtos}">
+                <td th:text="${produto.nome}"></td>
+                <td th:text="${produto.quantidade}"></td>
+                <td th:text="${produto.valor}"></td>
+                <td th:text="${produto.dataValidade}"></td>
+                <td>
+                  <!-- Botão Editar -->
+                  <a class="btn btn-primary btn-sm" th:href="@{/produtos/editar/{id}(id=${produto.id})}">Editar</a>
+                  <!-- Botão Excluir -->
+                  <a class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este produto?');"
+                     th:href="@{/produtos/excluir/{id}(id=${produto.id})}">Excluir</a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+
+            <!-- Botões Adicionar Produto e Voltar -->
+            <div class="mb-3">
+              <a class="btn btn-success mb-2" href="/produtos/novo">Adicionar Novo Produto</a>
+              <a class="btn btn-secondary mb-2" href="/">Voltar</a>
+            </div>
+          </div> <!-- Fim do corpo do card -->
+        </div> <!-- Fim do card -->
+      </div>
+
+    </div>
   </div>
 </div>
-
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
