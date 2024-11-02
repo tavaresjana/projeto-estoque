@@ -117,12 +117,21 @@
                             <h5 class="card-title mb-0">Relatórios</h5>
                         </div>
                         <div class="card-body">
-                            <div class="container mt-5">
-                                <h4>Relatórios em PDF</h4>
+                            <div class="container mt-3">
+
                                 <button class="btn btn-outline-secondary" th:onclick="window.location.href='/gerar-pdf'">
-                                    Exportar Relatório PDF
+                                    Exportar Relatório Geral
                                 </button>
+
                             </div>
+                            <div class="container mt-5">
+
+                                <button class="btn btn-outline-secondary" onclick="location.href='http://localhost:8080/relatorio'">
+                                    Exportar Relatórios Específicos
+                                </button>
+
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -135,7 +144,7 @@
                         </div>
                         <div class="card-body">
                             <div class="container mt-5">
-                                <h2>Upload de Planilha Excel</h2>
+
                                 <form method="POST" action="http://localhost:8080/upload" enctype="multipart/form-data">
                                     <div class="mb-3">
                                         <input type="file" name="file" class="form-control" required>
