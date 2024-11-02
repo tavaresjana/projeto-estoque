@@ -119,7 +119,7 @@ public class ProdutoController {
     // Exibe o formulário de busca
     @GetMapping("/produtos/relatorio-vencimento-proximo")
     public String exibirFormularioRelatorio() {
-        return "relatorio-vencimento-proximo";
+        return "relatorio";
     }
 
     // Processa o formulário e exibe a lista de produtos com vencimento próximo
@@ -128,7 +128,11 @@ public class ProdutoController {
         List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
         model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
         model.addAttribute("dias", dias); // Passa o valor de dias para exibir no formulário
-        return "relatorio-vencimento-proximo";
+
+        List<String> tiposRelatorio = List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo");
+        model.addAttribute("tiposRelatorio", tiposRelatorio);
+
+        return "relatorio";
     }
 
     // Método para exibir produtos com vencimento nos próximos 30 dias

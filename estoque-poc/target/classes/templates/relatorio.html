@@ -15,85 +15,124 @@
         <div class="col-2 bg-dark text-light vh-100">
             <h4 class="my-4 text-center">Menu</h4>
             <ul class="nav flex-column">
-
                 <li class="nav-item">
                     <a class="nav-link text-light" th:href="@{/}">Home</a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link text-light" th:href="@{/produtos}">Produtos</a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link text-light" th:href="@{/relatorio}">Relatórios</a>
                 </li>
-
             </ul>
         </div>
         <div class="col-10">
-        <div class="container mt-5">
-            <div class="card"> <!-- Card para encapsular o conteúdo -->
-                <div class="card-header">
-                    <h4 class="mb-0">Relatórios</h4>
+            <div class="container mt-5">
+                <!-- Primeiro Card -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="mb-0">Relatórios</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-inline" method="get" th:action="@{/gerarRelatorio}">
+                            <div class="form-group">
+                                <label class="mr-2" for="tipo">Tipo de Relatório:</label>
+                                <select class="form-control mr-2" id="tipo" name="tipo">
+                                    <option value="">Selecione</option>
+                                    <option th:each="tipo : ${tiposRelatorio}"
+                                            th:value="${tipo}"
+                                            th:text="${tipo}"></option>
+                                </select>
+
+
+
+                            </div>
+                            <button class="btn btn-primary" type="submit">Gerar Relatório</button>
+                        </form>
+                        <div class="alert alert-danger mt-2" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+                        <h4 class="mb-2" th:text="${titulo}"></h4>
+                        <table class="table table-bordered">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Quantidade</th>
+                                <th>Valor</th>
+                                <th>Data de Validade</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="produto : ${produtos}">
+                                <td th:text="${produto.id}"></td>
+                                <td th:text="${produto.nome}"></td>
+                                <td th:text="${produto.quantidade}"></td>
+                                <td th:text="${produto.valor}"></td>
+                                <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <a class="btn btn-primary mb-2" id="printLink" target="_blank"
+                           th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}">
+                            Imprimir em PDF
+                        </a>
+                        <a class="btn btn-secondary mb-2" href="/">Voltar</a>
+                    </div>
                 </div>
-                <div class="card-body"> <!-- Corpo do card -->
-                    <form class="form-inline" method="get" th:action="@{/gerarRelatorio}">
-                        <div class="form-group">
-                            <label class="mr-2" for="tipo">Tipo de Relatório:</label>
-                            <select class="form-control mr-2" id="tipo" name="tipo">
-                                <option value="">Selecione</option> <!-- Opção de seleção -->
-                                <option th:each="tipo : ${tiposRelatorio}"
-                                        th:selected="${tipo == tipoSelecionado}"
-                                        th:text="${tipo}"
-                                        th:value="${tipo}"></option>
-                                <!-- Define a opção selecionada -->
-                            </select>
+
+                <!-- Segundo Card -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h3>Relatório de Vencimento de Produtos</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/produtos/relatorio-vencimento-proximo}" method="post">
+                            <div class="form-group">
+                                <label for="dias">Informe a quantidade de dias para verificar o vencimento:</label>
+                                <input type="number" id="dias" name="dias" class="form-control" placeholder="Ex: 15" th:value="${dias}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Gerar Relatório</button>
+                        </form>
+
+                        <div th:if="${produtosProximosDoVencimento != null}">
+                            <h4 class="mt-4">Produtos com vencimento nos próximos <span th:text="${dias}"></span> dias:</h4>
+                            <table class="table table-bordered mt-3">
+                                <thead class="thead-light">
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Quantidade</th>
+                                    <th>Valor</th>
+                                    <th>Data de Validade</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="produto : ${produtosProximosDoVencimento}">
+                                    <td th:text="${produto.nome}"></td>
+                                    <td th:text="${produto.quantidade}"></td>
+                                    <td th:text="${produto.valor}"></td>
+                                    <td th:text="${produto.dataValidade}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <button class="btn btn-primary" type="submit">Gerar Relatório</button>
-                    </form>
 
-                    <!-- Exibe a mensagem de erro se existir -->
-                    <div class="alert alert-danger mt-2" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-
-                    <h4 class="mb-2" th:text="${titulo}"></h4>
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Quantidade</th>
-                            <th>Valor</th>
-                            <th>Data de Validade</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="produto : ${produtos}">
-                            <td th:text="${produto.id}"></td>
-                            <td th:text="${produto.nome}"></td>
-                            <td th:text="${produto.quantidade}"></td>
-                            <td th:text="${produto.valor}"></td>
-                            <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <a class="btn btn-primary mb-2" id="printLink" target="_blank"
-                       th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}">
-                        Imprimir em PDF
-                    </a>
-                    <a class="btn btn-secondary mb-2" href="/">Voltar</a>
+                        <div class="mt-3">
+                            <a href="/" class="btn btn-secondary mb-2">Voltar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
     </div>
 </div>
+
 <script>
     function updatePrintLink() {
-       var tipoSelect = document.getElementById("tipo");
-       var selectedTipo = tipoSelect.options[tipoSelect.selectedIndex].value;
-       var printLink = document.getElementById("printLink");
-       printLink.href = '/relatorios/gerar-pdf?tipo=' + encodeURIComponent(selectedTipo);
-   }
+        var tipoSelect = document.getElementById("tipo");
+        var selectedTipo = tipoSelect.options[tipoSelect.selectedIndex].value;
+        var printLink = document.getElementById("printLink");
+        printLink.href = '/relatorios/gerar-pdf?tipo=' + encodeURIComponent(selectedTipo);
+    }
 </script>
 </body>
 </html>
+

@@ -30,11 +30,8 @@ public class RelatoriosController {
     //pagina html relatorio
     @GetMapping("/relatorio")
     public String relatorios(Model model) {
-        model.addAttribute("tiposRelatorio", new String[]{
-                "Vencimento Próximos 30 Dias",
-                "Produtos Vencidos",
-                "Estoque Baixo"
-        });
+        List<String> tiposRelatorio = List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo");
+        model.addAttribute("tiposRelatorio", tiposRelatorio);
         return "relatorio";
     }
 
@@ -43,7 +40,7 @@ public class RelatoriosController {
 
         if (tipo == null || tipo.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Selecione algo válido.");
-            return "redirect:/relatorio"; // Redireciona para a página de relatórios
+            return "redirect:/relatorio"; // Redireciona para exibir o formulário
         }
 
         List<Produto> produtos = new ArrayList<>();
@@ -66,14 +63,19 @@ public class RelatoriosController {
                 break;
         }
 
+        // Adiciona o conteúdo para o relatório
         model.addAttribute("produtos", produtos);
         model.addAttribute("titulo", relatorioTitulo);
-        model.addAttribute("tipoRelatorio", tipo);
 
-        model.addAttribute("tiposRelatorio", List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo")); // Adicione sua lógica de tipos de relatórios
+
+      //  model.addAttribute("tipoSelecionado", tipo);
+
+        // Certifique-se de que a lista de tipos sempre é carregada ao gerar o relatório
+        model.addAttribute("tiposRelatorio", List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo"));
 
         return "relatorio";
     }
+
 
 
     @GetMapping("/relatorios/gerar-pdf")
