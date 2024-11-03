@@ -76,8 +76,7 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <a class="btn btn-primary mb-2" id="printLink" target="_blank"
-                                   th:href="@{/relatorios/gerar-pdf(tipo=${tipoRelatorio})}">
+                                <a class="btn btn-primary mb-2 disabled" id="printLink" target="_blank" href="#">
                                     Imprimir em PDF
                                 </a>
 
@@ -144,12 +143,21 @@
 </div>
 
 <script>
-    function updatePrintLink() {
-        var tipoSelect = document.getElementById("tipo");
-        var selectedTipo = tipoSelect.options[tipoSelect.selectedIndex].value;
-        var printLink = document.getElementById("printLink");
-        printLink.href = '/relatorios/gerar-pdf?tipo=' + encodeURIComponent(selectedTipo);
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        const selectTipo = document.getElementById("tipo");
+        const printLink = document.getElementById("printLink");
+
+        selectTipo.addEventListener("change", function() {
+            const tipoSelecionado = selectTipo.value;
+            if (tipoSelecionado) {
+                printLink.href = "/relatorios/gerar-pdf?tipo=" + encodeURIComponent(tipoSelecionado);
+                printLink.classList.remove("disabled"); // Remove a classe disabled quando um tipo é selecionado
+            } else {
+                printLink.href = "#";
+                printLink.classList.add("disabled"); // Adiciona uma classe disabled se nenhum tipo for selecionado
+            }
+        });
+    });
 </script>
 </body>
 </html>
