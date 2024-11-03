@@ -68,7 +68,7 @@ public class RelatoriosController {
         model.addAttribute("titulo", relatorioTitulo);
 
 
-      //  model.addAttribute("tipoSelecionado", tipo);
+        model.addAttribute("tipoSelecionado", tipo);
 
         // Certifique-se de que a lista de tipos sempre é carregada ao gerar o relatório
         model.addAttribute("tiposRelatorio", List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo"));
