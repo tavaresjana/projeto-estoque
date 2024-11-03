@@ -187,10 +187,29 @@ public class ProdutoController {
     }
 
     // Método para saída de produto
+//    @PostMapping("/produtos/saida/{id}")
+//    public String subtrairQuantidade(@PathVariable Long id, @RequestParam int quantidade) {
+//        produtoService.subtrairQuantidade(id, quantidade);
+//        return "redirect:/produtos"; // redireciona para a página de produtos
+//    }
+
     @PostMapping("/produtos/saida/{id}")
-    public String subtrairQuantidade(@PathVariable Long id, @RequestParam int quantidade) {
+    public String subtrairQuantidade(@PathVariable Long id, @RequestParam int quantidade, RedirectAttributes redirectAttributes) {
+        Produto produto = produtoService.findById(id) // Método para buscar o produto
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        if (quantidade > produto.getQuantidade()) {
+            // Adiciona um atributo de erro para ser exibido na próxima página
+            redirectAttributes.addFlashAttribute("error", "Quantidade a ser subtraída é maior do que a disponível.");
+            return "redirect:/produtos"; // redireciona para a página de produtos
+        }
+
         produtoService.subtrairQuantidade(id, quantidade);
+        redirectAttributes.addFlashAttribute("success", "Quantidade subtraída com sucesso.");
         return "redirect:/produtos"; // redireciona para a página de produtos
     }
+
+
+
 
 }

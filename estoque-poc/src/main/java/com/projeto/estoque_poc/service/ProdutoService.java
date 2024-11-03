@@ -3,6 +3,7 @@ package com.projeto.estoque_poc.service;
 import com.projeto.estoque_poc.exceptions.ProdutoNaoEncontradoException;
 import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -199,5 +200,8 @@ public class ProdutoService {
         produtoRepository.save(produto);
     }
 
+    public Optional<Produto> findById(Long id) {
+        return produtoRepository.findById(id);
+    }
 
 }

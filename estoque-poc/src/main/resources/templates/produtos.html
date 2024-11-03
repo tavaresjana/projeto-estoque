@@ -7,6 +7,9 @@
 </head>
 <body>
 
+<!-- Mensagens de erro e sucesso -->
+
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-2 bg-dark text-light vh-100">
@@ -58,6 +61,8 @@
                     <input type="number" style="width: 50px;" name="quantidade" min="0" placeholder="0" required>
                     <button class="btn btn-success btn-sm" type="submit">+</button>
                   </form>
+
+                  <!-- Formulário para saída de produtos -->
                   <form th:action="@{/produtos/saida/{id}(id=${produto.id})}" method="post" class="d-inline">
                     <input type="number" style="width: 50px;" name="quantidade" min="0" placeholder="0" required>
                     <button class="btn btn-danger btn-sm" type="submit">-</button>
@@ -71,6 +76,24 @@
               </tr>
               </tbody>
             </table>
+
+            <div>
+              <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                <span th:text="${error}"></span>
+                <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+                <span th:text="${success}"></span>
+                <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+
+            </div>
 
             <div class="mb-3">
               <a class="btn btn-success mb-2" href="/produtos/novo">Adicionar Novo Produto</a>
