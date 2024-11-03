@@ -25,7 +25,7 @@ public class Produto {
     private double valor;
     private LocalDate dataValidade;
 
-    // Getters e Setters
+
     public Long getId() {
         return id;
     }
