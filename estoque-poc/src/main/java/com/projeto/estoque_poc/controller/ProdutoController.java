@@ -147,29 +147,7 @@ public class ProdutoController {
 
         return "relatorio";
     }
-//
-//    @GetMapping("/produtos/relatorio-vencimento-proximo-30-dias")
-//    public String gerarRelatorioProdutosVencimentoProximo30Dias(Model model) {
-//        int dias = 30; // Define 30 dias como o período fixo
-//        List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
-//        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
-//        model.addAttribute("dias", dias); // Passa o valor de 30 dias para exibir no título
-//        return "relatorio-vencimento-proximo";
-//    }
-//
-//    @GetMapping("/produtos/vencidos")
-//    public String exibirProdutosVencidos(Model model) {
-//        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosVencidos();
-//        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
-//        return "relatorio-vencimento-proximo";
-//    }
-//
-//    @GetMapping("/produtos/estoque-baixo")
-//    public String exibirProdutosEstoqueBaixo(Model model) {
-//        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosEstoqueBaixo();
-//        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
-//        return "relatorio-vencimento-proximo";
-//    }
+
 
     @GetMapping("/produtos/buscar")
     public String buscarProduto(@RequestParam String nome, Model model) {
