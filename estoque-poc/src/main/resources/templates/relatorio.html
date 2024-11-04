@@ -108,24 +108,33 @@
 
                                 <div th:if="${produtosProximosDoVencimento != null}">
                                     <h4 class="mt-4">Produtos com vencimento nos próximos <span th:text="${dias}"></span> dias:</h4>
-                                    <table class="table table-bordered mt-3">
-                                        <thead class="thead-light">
-                                        <tr>
-                                            <th>Nome</th>
-                                            <th>Quantidade</th>
-                                            <th>Valor</th>
-                                            <th>Data de Validade</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="produto : ${produtosProximosDoVencimento}">
-                                            <td th:text="${produto.nome}"></td>
-                                            <td th:text="${produto.quantidade}"></td>
-                                            <td th:text="${produto.valor}"></td>
-                                            <td th:text="${produto.dataValidade}"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+
+                                    <!-- Alerta Bootstrap se a lista estiver vazia -->
+                                    <div th:if="${produtosProximosDoVencimento.isEmpty()}" class="alert alert-info alert-dismissible fade show" role="alert">
+                                        Não há dados para o período selecionado.
+                                    </div>
+
+                                    <!-- Tabela de produtos se a lista não estiver vazia -->
+                                    <div th:if="${!produtosProximosDoVencimento.isEmpty()}">
+                                        <table class="table table-bordered mt-3">
+                                            <thead class="thead-light">
+                                            <tr>
+                                                <th>Nome</th>
+                                                <th>Quantidade</th>
+                                                <th>Valor</th>
+                                                <th>Data de Validade</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="produto : ${produtosProximosDoVencimento}">
+                                                <td th:text="${produto.nome}"></td>
+                                                <td th:text="${produto.quantidade}"></td>
+                                                <td th:text="${produto.valor}"></td>
+                                                <td th:text="${produto.dataValidade}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

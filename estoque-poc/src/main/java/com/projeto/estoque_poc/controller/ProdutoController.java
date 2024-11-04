@@ -117,7 +117,6 @@ public class ProdutoController {
         return "redirect:/produtos"; // Redireciona para a lista de produtos após adicionar
     }
 
-
     // Exibe o formulário de busca
     @GetMapping("/produtos/relatorio-vencimento-proximo")
     public String exibirFormularioRelatorio(Model model) {
@@ -128,8 +127,8 @@ public class ProdutoController {
 
     // Processa o formulário e exibe a lista de produtos com vencimento próximo
     @PostMapping("/produtos/relatorio-vencimento-proximo")
-    public String gerarRelatorioProdutosVencimentoProximo(@RequestParam(value = "dias", required = false) Integer dias, Model model, RedirectAttributes redirectAttributes) {
-
+    public String gerarRelatorioProdutosVencimentoProximo(@RequestParam(value = "dias", required = false)
+                                                          Integer dias, Model model, RedirectAttributes redirectAttributes) {
         if (dias == null || dias <= 0) {
             redirectAttributes.addFlashAttribute("errorMessage", "Por favor, informe uma quantidade de dias válida.");
 
@@ -148,30 +147,29 @@ public class ProdutoController {
 
         return "relatorio";
     }
-
-    // Método para exibir produtos com vencimento nos próximos 30 dias
-    @GetMapping("/produtos/relatorio-vencimento-proximo-30-dias")
-    public String gerarRelatorioProdutosVencimentoProximo30Dias(Model model) {
-        int dias = 30; // Define 30 dias como o período fixo
-        List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
-        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
-        model.addAttribute("dias", dias); // Passa o valor de 30 dias para exibir no título
-        return "relatorio-vencimento-proximo";
-    }
-
-    @GetMapping("/produtos/vencidos")
-    public String exibirProdutosVencidos(Model model) {
-        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosVencidos();
-        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
-        return "relatorio-vencimento-proximo";
-    }
-
-    @GetMapping("/produtos/estoque-baixo")
-    public String exibirProdutosEstoqueBaixo(Model model) {
-        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosEstoqueBaixo();
-        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
-        return "relatorio-vencimento-proximo";
-    }
+//
+//    @GetMapping("/produtos/relatorio-vencimento-proximo-30-dias")
+//    public String gerarRelatorioProdutosVencimentoProximo30Dias(Model model) {
+//        int dias = 30; // Define 30 dias como o período fixo
+//        List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
+//        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+//        model.addAttribute("dias", dias); // Passa o valor de 30 dias para exibir no título
+//        return "relatorio-vencimento-proximo";
+//    }
+//
+//    @GetMapping("/produtos/vencidos")
+//    public String exibirProdutosVencidos(Model model) {
+//        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosVencidos();
+//        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+//        return "relatorio-vencimento-proximo";
+//    }
+//
+//    @GetMapping("/produtos/estoque-baixo")
+//    public String exibirProdutosEstoqueBaixo(Model model) {
+//        List<Produto> produtosProximosDoVencimento = produtoService.listarProdutosEstoqueBaixo();
+//        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+//        return "relatorio-vencimento-proximo";
+//    }
 
     @GetMapping("/produtos/buscar")
     public String buscarProduto(@RequestParam String nome, Model model) {
@@ -179,19 +177,11 @@ public class ProdutoController {
         return "produtos"; // nome da sua página HTML
     }
 
-    // Método para entrada de produto
     @PostMapping("/produtos/entrada/{id}")
     public String adicionarQuantidade(@PathVariable Long id, @RequestParam int quantidade) {
         produtoService.adicionarQuantidade(id, quantidade);
         return "redirect:/produtos"; // redireciona para a página de produtos
     }
-
-    // Método para saída de produto
-//    @PostMapping("/produtos/saida/{id}")
-//    public String subtrairQuantidade(@PathVariable Long id, @RequestParam int quantidade) {
-//        produtoService.subtrairQuantidade(id, quantidade);
-//        return "redirect:/produtos"; // redireciona para a página de produtos
-//    }
 
     @PostMapping("/produtos/saida/{id}")
     public String subtrairQuantidade(@PathVariable Long id, @RequestParam int quantidade, RedirectAttributes redirectAttributes) {
@@ -199,7 +189,6 @@ public class ProdutoController {
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
         if (quantidade > produto.getQuantidade()) {
-            // Adiciona um atributo de erro para ser exibido na próxima página
             redirectAttributes.addFlashAttribute("error", "Quantidade a ser subtraída é maior do que a disponível.");
             return "redirect:/produtos"; // redireciona para a página de produtos
         }
@@ -208,8 +197,5 @@ public class ProdutoController {
         redirectAttributes.addFlashAttribute("success", "Quantidade subtraída com sucesso.");
         return "redirect:/produtos"; // redireciona para a página de produtos
     }
-
-
-
 
 }
