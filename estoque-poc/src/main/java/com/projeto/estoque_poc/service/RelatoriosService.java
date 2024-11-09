@@ -6,12 +6,16 @@ import com.lowagie.text.Paragraph;
 import com.lowagie.text.pdf.PdfWriter;
 import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.repository.ProdutoRepository;
+import com.projeto.estoque_poc.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RelatoriosService {
@@ -59,5 +63,15 @@ public class RelatoriosService {
         return outputStream;
     }
 
-
+    public static List<Map<String, Object>> formatarListaDeProdutos(List<Produto> produtos) {
+        return produtos.stream().map(produto -> {
+            Map<String, Object> produtoMap = new HashMap<>();
+            produtoMap.put("id", produto.getId());
+            produtoMap.put("nome", produto.getNome());
+            produtoMap.put("quantidade", produto.getQuantidade());
+            produtoMap.put("valor", produto.getValor());
+            produtoMap.put("dataValidade", DataUtil.formatarData(produto.getDataValidade()));
+            return produtoMap;
+        }).collect(Collectors.toList());
+    }
 }

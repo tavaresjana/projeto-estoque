@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -48,15 +49,17 @@ public class ProdutoController {
 
         List<Produto> produtosRecentes = produtoService.buscarPorProdutosRecentes();
 
-        List<Produto> produtosComDataFormatada = produtosRecentes.stream().map(produto -> {
-            produto.setDataValidadeFormatada(DataUtil.formatarData(produto.getDataValidade()));
-            return produto;
+        List<Map<String, Object>> produtosComDataFormatada = produtosRecentes.stream().map(produto -> {
+            Map<String, Object> produtoMap = Map.of(
+                    "id", produto.getId(),
+                    "nome", produto.getNome(),
+                    "quantidade", produto.getQuantidade(),
+                    "dataValidade", DataUtil.formatarData(produto.getDataValidade())
+            );
+            return produtoMap;
         }).collect(Collectors.toList());
 
         model.addAttribute("produtosRecentes", produtosComDataFormatada);
-
-
-
         return "index";
     }
 
@@ -76,7 +79,18 @@ public class ProdutoController {
     @GetMapping("/produtos")
     public String listarProdutos(Model model) {
         List<Produto> produtos = produtoService.buscarTodos();
-        model.addAttribute("produtos", produtos);
+        List<Map<String, Object>> produtosComDataFormatada = produtos.stream().map(produto -> {
+            Map<String, Object> produtoMap = Map.of(
+                    "id", produto.getId(),
+                    "nome", produto.getNome(),
+                    "quantidade", produto.getQuantidade(),
+                    "dataValidade", DataUtil.formatarData(produto.getDataValidade())
+            );
+            return produtoMap;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("produtos", produtosComDataFormatada);
+
         return "produtos";
     }
 
@@ -156,7 +170,18 @@ public class ProdutoController {
         }
 
         List<Produto> produtosProximosDoVencimento = produtoService.produtosComDataDeValidadeProxima(dias);
-        model.addAttribute("produtosProximosDoVencimento", produtosProximosDoVencimento);
+        List<Map<String, Object>> produtosComDataFormatada = produtosProximosDoVencimento.stream().map(produto -> {
+            Map<String, Object> produtoMap = Map.of(
+                    "id", produto.getId(),
+                    "nome", produto.getNome(),
+                    "quantidade", produto.getQuantidade(),
+                    "dataValidade", DataUtil.formatarData(produto.getDataValidade())
+            );
+            return produtoMap;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("produtosProximosDoVencimento", produtosComDataFormatada);
+
         model.addAttribute("dias", dias); // Passa o valor de dias para exibir no formulário
 
         List<String> tiposRelatorio = List.of("Vencimento Próximos 30 Dias", "Produtos Vencidos", "Estoque Baixo");

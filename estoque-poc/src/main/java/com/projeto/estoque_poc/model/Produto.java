@@ -26,17 +26,6 @@ public class Produto {
     private double valor;
     private LocalDate dataValidade;
 
-    private String dataValidadeFormatada;
-
-    // Getters e Setters para o campo formatado
-    public String getDataValidadeFormatada() {
-        return dataValidadeFormatada;
-    }
-
-    public void setDataValidadeFormatada(String dataValidadeFormatada) {
-        this.dataValidadeFormatada = dataValidadeFormatada;
-    }
-
     public Long getId() {
         return id;
     }

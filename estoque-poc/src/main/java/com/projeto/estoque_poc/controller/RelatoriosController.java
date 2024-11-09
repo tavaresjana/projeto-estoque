@@ -3,6 +3,7 @@ package com.projeto.estoque_poc.controller;
 import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.service.ProdutoService;
 import com.projeto.estoque_poc.service.RelatoriosService;
+import com.projeto.estoque_poc.util.DataUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.projeto.estoque_poc.service.RelatoriosService.formatarListaDeProdutos;
 
 @Controller
 public class RelatoriosController {
@@ -43,20 +48,20 @@ public class RelatoriosController {
             return "redirect:/relatorio"; // Redireciona para exibir o formulário
         }
 
-        List<Produto> produtos = new ArrayList<>();
+        List<Map<String, Object>> produtos = new ArrayList<>();
         String relatorioTitulo = "";
 
         switch (tipo) {
             case "Vencimento Próximos 30 Dias":
-                produtos = produtoService.produtosComDataDeValidadeProxima(30);
+                produtos = relatoriosService.formatarListaDeProdutos(produtoService.produtosComDataDeValidadeProxima(30));
                 relatorioTitulo = "Relatório de Produtos com Vencimento nos Próximos 30 Dias";
                 break;
             case "Produtos Vencidos":
-                produtos = produtoService.listarProdutosVencidos();
+                produtos = relatoriosService.formatarListaDeProdutos(produtoService.listarProdutosVencidos());
                 relatorioTitulo = "Relatório de Produtos Vencidos";
                 break;
             case "Estoque Baixo":
-                produtos = produtoService.listarProdutosEstoqueBaixo();
+                produtos = relatoriosService.formatarListaDeProdutos(produtoService.listarProdutosEstoqueBaixo());
                 relatorioTitulo = "Relatório de Produtos com Estoque Baixo";
                 break;
             default:
