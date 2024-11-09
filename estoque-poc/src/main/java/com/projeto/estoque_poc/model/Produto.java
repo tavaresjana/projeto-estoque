@@ -25,7 +25,6 @@ public class Produto {
     private double valor;
     private LocalDate dataValidade;
 
-
     public Long getId() {
         return id;
     }
@@ -65,4 +64,5 @@ public class Produto {
     public void setDataValidade(LocalDate dataValidade) {
         this.dataValidade = dataValidade;
     }
+
 }

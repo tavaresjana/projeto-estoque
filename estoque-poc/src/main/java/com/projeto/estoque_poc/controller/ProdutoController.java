@@ -15,9 +15,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class ProdutoController {
@@ -32,10 +34,14 @@ public class ProdutoController {
         int estoqueBaixo = produtoService.contarEstoqueBaixo();
         double valorTotal = produtoService.calcularValorTotal();
 
+        // Formatar o valor total como moeda brasileira
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        String valorTotalFormatado = currencyFormatter.format(valorTotal);
+
         model.addAttribute("totalProdutos", totalProdutos);
         model.addAttribute("produtosVencer", produtosVencer);
         model.addAttribute("estoqueBaixo", estoqueBaixo);
-        model.addAttribute("valorTotal", valorTotal);
+        model.addAttribute("valorTotal", valorTotalFormatado);
 
         List<Produto> produtosRecentes = produtoService.buscarPorProdutosRecentes();
         model.addAttribute("produtosRecentes", produtosRecentes);
