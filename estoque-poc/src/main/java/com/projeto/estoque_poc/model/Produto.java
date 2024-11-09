@@ -2,6 +2,7 @@ package com.projeto.estoque_poc.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,6 +25,17 @@ public class Produto {
     private int quantidade;
     private double valor;
     private LocalDate dataValidade;
+
+    private String dataValidadeFormatada;
+
+    // Getters e Setters para o campo formatado
+    public String getDataValidadeFormatada() {
+        return dataValidadeFormatada;
+    }
+
+    public void setDataValidadeFormatada(String dataValidadeFormatada) {
+        this.dataValidadeFormatada = dataValidadeFormatada;
+    }
 
     public Long getId() {
         return id;

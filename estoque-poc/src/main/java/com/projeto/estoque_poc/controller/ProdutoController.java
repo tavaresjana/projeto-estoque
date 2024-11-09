@@ -2,6 +2,7 @@ package com.projeto.estoque_poc.controller;
 
 import com.projeto.estoque_poc.model.Produto;
 import com.projeto.estoque_poc.service.ProdutoService;
+import com.projeto.estoque_poc.util.DataUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,9 +18,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProdutoController {
@@ -44,7 +47,15 @@ public class ProdutoController {
         model.addAttribute("valorTotal", valorTotalFormatado);
 
         List<Produto> produtosRecentes = produtoService.buscarPorProdutosRecentes();
-        model.addAttribute("produtosRecentes", produtosRecentes);
+
+        List<Produto> produtosComDataFormatada = produtosRecentes.stream().map(produto -> {
+            produto.setDataValidadeFormatada(DataUtil.formatarData(produto.getDataValidade()));
+            return produto;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("produtosRecentes", produtosComDataFormatada);
+
+
 
         return "index";
     }
