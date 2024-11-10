@@ -10,7 +10,10 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-2 bg-dark text-light vh-100">
-            <h4 class="my-4 text-center">Menu</h4>
+            <div class="d-flex align-items-center justify-content-center my-4">
+                <img src="/perfil.png" alt="Ícone de Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
+            </div>
+            <h4 class="my-4 text-center">Bem vindo, @</h4>
             <ul class="nav flex-column">
 
                 <li class="nav-item">
@@ -92,10 +95,14 @@
                         </thead>
                         <tbody>
                         <tr th:each="produto : ${produtosRecentes}">
-                            <td th:text="${produto.id}"></td>
-                            <td th:text="${produto.nome}"></td>
-                            <td th:text="${produto.quantidade}"></td>
-                            <td th:text="${produto.dataValidade}"></td>
+<!--                            <td th:text="${produto.id}"></td>-->
+<!--                            <td th:text="${produto.nome}"></td>-->
+<!--                            <td th:text="${produto.quantidade}"></td>-->
+<!--                            <td th:text="${produto.dataValidadeFormatada}"></td>-->
+                            <td th:text="${produto['id']}"></td>
+                            <td th:text="${produto['nome']}"></td>
+                            <td th:text="${produto['quantidade']}"></td>
+                            <td th:text="${produto['dataValidade']}"></td>
                             <td>
                                 <a class="btn btn-sm btn-primary" th:href="@{/produtos/editar/{id}(id=${produto.id})}">Editar</a>
                                 <a class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este produto?');"

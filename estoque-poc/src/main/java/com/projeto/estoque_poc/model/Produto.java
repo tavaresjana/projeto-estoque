@@ -2,6 +2,7 @@ package com.projeto.estoque_poc.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,7 +25,6 @@ public class Produto {
     private int quantidade;
     private double valor;
     private LocalDate dataValidade;
-
 
     public Long getId() {
         return id;
@@ -65,4 +65,5 @@ public class Produto {
     public void setDataValidade(LocalDate dataValidade) {
         this.dataValidade = dataValidade;
     }
+
 }

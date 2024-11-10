@@ -70,11 +70,16 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="produto : ${produtos}">
-                                        <td th:text="${produto.id}"></td>
-                                        <td th:text="${produto.nome}"></td>
-                                        <td th:text="${produto.quantidade}"></td>
-                                        <td th:text="${produto.valor}"></td>
-                                        <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>
+<!--                                        <td th:text="${produto.id}"></td>-->
+<!--                                        <td th:text="${produto.nome}"></td>-->
+<!--                                        <td th:text="${produto.quantidade}"></td>-->
+<!--                                        <td th:text="${produto.valor}"></td>-->
+<!--                                        <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>-->
+                                        <td th:text="${produto['id']}"></td>
+                                        <td th:text="${produto['nome']}"></td>
+                                        <td th:text="${produto['quantidade']}"></td>
+                                        <td th:text="${produto['valor']}"></td>
+                                        <td th:text="${produto['dataValidade']}"></td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -127,10 +132,10 @@
                                             </thead>
                                             <tbody>
                                             <tr th:each="produto : ${produtosProximosDoVencimento}">
-                                                <td th:text="${produto.nome}"></td>
-                                                <td th:text="${produto.quantidade}"></td>
-                                                <td th:text="${produto.valor}"></td>
-                                                <td th:text="${produto.dataValidade}"></td>
+                                                <td th:text="${produto['id']}"></td>
+                                                <td th:text="${produto['nome']}"></td>
+                                                <td th:text="${produto['quantidade']}"></td>
+                                                <td th:text="${produto['dataValidade']}"></td>
                                             </tr>
                                             </tbody>
                                         </table>
