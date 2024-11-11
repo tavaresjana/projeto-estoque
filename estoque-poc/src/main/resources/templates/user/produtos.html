@@ -4,7 +4,7 @@
   <link rel="shortcut icon" href="/estoque.png">
   <title>Produtos</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 
@@ -13,31 +13,68 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-2 bg-dark text-light vh-100">
+    <div class="col-2 bg-dark-800 text-light vh-100 bg-dark-custom">
       <div class="d-flex align-items-center justify-content-center my-4">
-        <img src="/perfil.png" alt="Ícone de Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
+        <img src="/perfil3.png" alt="Ícone de Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
       </div>
-      <h4 class="my-4 text-center">Bem vindo, @admin</h4>
+      <h4 class="my-4 text-center">Bem vindo, @user</h4>
       <ul class="nav flex-column">
-
-        <li class="nav-item">
-          <a class="nav-link text-light" th:href="@{/}">◉ Home</a>
-        </li>
 
         <li class="nav-item">
           <a class="nav-link text-light" th:href="@{/produtos}">◉ Produtos</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link text-light" th:href="@{/relatorio}">◉ Relatórios</a>
-        </li>
-
-        <li class="nav-item">
           <a href="/logout" class="mt-4 nav-link text-light font-bold"> ➦ Sair</a>
         </li>
+
       </ul>
     </div>
     <div class="col-10">
+
+      <div class="container mt-5">
+        <!-- Card de Resumo dos Produtos -->
+        <div class="card mb-4 mt-2">
+          <div class="card-header text-center">
+            <h4>Resumo dos Produtos</h4>
+          </div>
+          <div class="card-body">
+            <div class="row mb-4 d-flex justify-content-center">
+              <!-- Card 1: Total de Produtos -->
+              <div class="col-4 col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Total de Produtos</h5>
+                    <p class="card-text" th:text="${totalProdutos}"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 2: Produtos a Vencer -->
+              <div class="col-4 col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Produtos a Vencer</h5>
+                    <p class="card-text" th:text="${produtosVencer}"></p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card 3: Estoque Baixo -->
+              <div class="col-4 col-md-3">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title">Estoque Baixo</h5>
+                    <p class="card-text" th:text="${estoqueBaixo}"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div class="container mt-5">
         <div class="card">
           <div class="card-header">
@@ -63,10 +100,11 @@
               </thead>
               <tbody>
               <tr th:each="produto : ${produtos}">
-                <td th:text="${produto['id']}"></td>
+
                 <td th:text="${produto['nome']}"></td>
                 <td th:text="${produto['quantidade']}"></td>
-                <td th:text="${produto['dataValidade']}"></td>
+                <td th:text="${produto['valor']}"></td>
+                <td th:text="${produto['dataValidadeFormatada']}"></td>
                 <td>
                   <form th:action="@{/produtos/entrada/{id}(id=${produto.id})}" method="post" class="d-inline">
                     <input type="number" style="width: 50px;" name="quantidade" min="0" placeholder="0" required>

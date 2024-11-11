@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <!-- Adicionando o link para o Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container-fluid d-flex justify-content-center align-items-center" style="height: 100vh;">
+  <div class="row w-100">
+    <!-- Div da imagem à esquerda -->
+    <div class="col-md-6 d-none d-md-block">
+      <img src="/img_login2.png" alt="Imagem" class="img-fluid h-100 w-100 object-cover">
+    </div>
+
+    <!-- Div do formulário de login à direita -->
+    <div class="col-md-6 d-flex justify-content-center align-items-center">
+      <div class="card shadow-sm p-4 w-75">
+        <h2 class="text-center mb-4">Login</h2>
+        <form th:action="@{/login}" th:object="${usuario}" method="post">
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+          </div>
+
+          <!-- Senha -->
+          <div class="form-group">
+            <label for="senha">Senha:</label>
+            <input type="password" class="form-control" id="senha" th:field="*{senha}" required>
+          </div>
+
+          <!-- Botão de Login -->
+          <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+
+          <!-- Mensagem de erro -->
+          <div th:if="${errorMessage}" class="alert alert-danger mt-3">
+            <span th:text="${errorMessage}"></span>
+          </div>
+        </form>
+        <div class="text-center mt-3">
+          <a href="#" th:href="@{/cadastro}" class="text-muted">Não tem conta? Crie já uma!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Adicionando o script do Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
