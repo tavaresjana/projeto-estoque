@@ -22,7 +22,7 @@
             <ul class="nav flex-column">
 
                 <li class="nav-item">
-                    <a class="nav-link text-light" th:href="@{/relatorio}">◉ Relatórios</a>
+                    <a class="nav-link text-light" th:href="@{/finac/relatorio}">◉ Relatórios</a>
                 </li>
 
                 <li class="nav-item">
@@ -89,7 +89,7 @@
                                 <h5 class="mb-0">Relatório Geral</h5>
                             </div>
                             <div class="card-body">
-                                <form class="form-inline" method="get" th:action="@{/gerarRelatorio}">
+                                <form class="form-inline" method="get" th:action="@{/finac/relatorio/gerarRelatorio}">
                                     <div class="form-group">
                                         <label class="mr-2" for="tipo">Tipo de Relatório:</label>
                                         <select class="form-control mr-2" id="tipo" name="tipo">
@@ -145,7 +145,7 @@
                                 <h5>Relatório de Vencimento de Produtos</h5>
                             </div>
                             <div class="card-body">
-                                <form th:action="@{/produtos/relatorio-vencimento-proximo}" method="post">
+                                <form th:action="@{/finac/relatorios/produtos/relatorio-vencimento-proximo}" method="post">
                                     <div class="form-group">
                                         <label for="dias">Informe a quantidade de dias para verificar o vencimento:</label>
                                         <div class="input-group">
@@ -196,7 +196,7 @@
             </div>
     </div>
 </div>
-
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

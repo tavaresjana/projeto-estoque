@@ -1,6 +1,8 @@
 package com.projeto.estoque_poc.controller;
 
 import com.projeto.estoque_poc.model.Usuario;
+import com.projeto.estoque_poc.service.ProdutoService;
+import com.projeto.estoque_poc.service.RelatoriosService;
 import com.projeto.estoque_poc.service.UsuarioService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +11,23 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Optional;
+import java.text.NumberFormat;
+import java.util.*;
 
 @Controller
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @Autowired
+    private ProdutoService produtoService;
+
+    @Autowired
+    private RelatoriosService relatoriosService;
 
     @GetMapping("/cadastro")
     public String mostrarFormularioCadastro(Model model) {
@@ -67,11 +78,6 @@ public class UsuarioController {
         return "user/produtos";  // Certifique-se de que o template user/produtos.html existe
     }
 
-    @GetMapping("/finac/relatorio")
-    public String relatorioFinac() {
-        // Lógica para exibir relatório financeiro para usuários FINAC
-        return "finac/relatorio";  // Certifique-se de que o template finac/relatorio.html existe
-    }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -80,4 +86,5 @@ public class UsuarioController {
         // Redireciona o usuário para a página de login após o logout
         return "redirect:/login";
     }
+
 }
