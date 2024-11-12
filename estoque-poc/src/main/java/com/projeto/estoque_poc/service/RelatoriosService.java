@@ -1,5 +1,6 @@
 package com.projeto.estoque_poc.service;
 
+import ch.qos.logback.core.model.Model;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Paragraph;
@@ -11,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -74,4 +77,5 @@ public class RelatoriosService {
             return produtoMap;
         }).collect(Collectors.toList());
     }
+
 }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="shortcut icon" href="/estoque.png">
+    <title>Adicionar Produto</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-2 bg-dark text-light vh-100 bg-dark-custom">
+            <div class="d-flex align-items-center justify-content-center my-4">
+                <img src="/perfil3.png" alt="Ícone de Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
+            </div>
+            <h4 class="my-4 text-center">Bem vindo, @user</h4>
+            <ul class="nav flex-column">
+
+                <li class="nav-item">
+                    <a class="nav-link text-light" th:href="@{/user/produtos}">◉ Produtos</a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/logout" class="mt-4 nav-link text-light font-bold"> ➦ Sair</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="col-10">
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">Adicionar Produto</h5>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/user/produtos/novo}" th:object="${produto}" method="post">
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" class="form-control" th:field="*{nome}" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade</label>
+                    <input type="number" id="quantidade" class="form-control" th:field="*{quantidade}" required>
+                </div>
+                <div class="form-group">
+                    <label for="valor">Valor</label>
+                    <input type="number" id="valor" class="form-control" th:field="*{valor}" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataValidade">Data de Validade</label>
+                    <input type="date" id="dataValidade" class="form-control" th:field="*{dataValidade}" required>
+                </div>
+                <button type="submit" class="btn btn-success">Salvar Produto</button>
+                <a href="/user/produtos" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+
+</div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

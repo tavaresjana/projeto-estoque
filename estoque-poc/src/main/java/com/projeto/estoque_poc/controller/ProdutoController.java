@@ -75,7 +75,6 @@ public class ProdutoController {
         }
     }
 
-
     @GetMapping("/produtos")
     public String listarProdutos(Model model) {
         List<Produto> produtos = produtoService.buscarTodos();
@@ -218,4 +217,113 @@ public class ProdutoController {
         return "redirect:/produtos"; // redireciona para a página de produtos
     }
 
+    /*****************
+     * pag de usuario
+     *****************/
+    @GetMapping("/user/produtos")
+    public String produtosUsuario(Model model) {
+        // Dados do dashboard
+        int totalProdutos = produtoService.contarTotalProdutos();
+        int produtosVencer = produtoService.contarProdutosAVencer();
+        int estoqueBaixo = produtoService.contarEstoqueBaixo();
+
+        // Adiciona as informações do dashboard ao modelo
+        model.addAttribute("estoqueBaixo", estoqueBaixo);
+        model.addAttribute("totalProdutos", totalProdutos);
+        model.addAttribute("produtosVencer", produtosVencer);
+
+        // Adiciona a lista de produtos ao modelo
+        List<Produto> produtos = produtoService.buscarTodos();
+        List<Map<String, Object>> produtosComDataFormatada = produtos.stream().map(produto -> {
+            Map<String, Object> produtoMap = Map.of(
+                    "id", produto.getId(),
+                    "nome", produto.getNome(),
+                    "quantidade", produto.getQuantidade(),
+                    "valor", produto.getValor(),
+                    "dataValidadeFormatada", DataUtil.formatarData(produto.getDataValidade())
+            );
+            return produtoMap;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("produtos", produtosComDataFormatada);
+
+        return "/user/produtos";
+    }
+
+    @GetMapping("/user/produtos/editar/{id}")
+    public String editarProdutoRoleUser(@PathVariable Long id, Model model) {
+        Produto produto = produtoService.buscarPorId(id);
+        model.addAttribute("produto", produto);
+        return "/user/editar-produto"; // página HTML para editar o produto
+    }
+
+    @PostMapping("/user/produtos/editar/{id}")
+    public String atualizarProdutoRoleUser(@PathVariable Long id, @ModelAttribute Produto produto) {
+        produto.setId(id);  // Define o ID para garantir que estamos atualizando o produto correto
+        produtoService.atualizarProduto(produto);
+        return "redirect:/user/produtos";
+    }
+
+    @GetMapping("/user/produtos/excluir/{id}")
+    public String excluirProdutoRoleUser(@PathVariable Long id) {
+        produtoService.excluirProduto(id);
+        return "redirect:/user/produtos";
+    }
+
+    @GetMapping("/user/produtos/novo")
+    public String exibirFormularioNovoProdutoRoleUser(Model model) {
+        model.addAttribute("produto", new Produto());
+        return "/user/adicionar-produto"; // Nome do template HTML para o formulário
+    }
+
+    @PostMapping("/user/produtos/novo")
+    public String adicionarProdutoRoleUser(@ModelAttribute Produto produto) {
+        produtoService.salvarProduto(produto);
+        return "redirect:/user/produtos"; // Redireciona para a lista de produtos após adicionar
+    }
+
+    @GetMapping("/user/produtos/buscar")
+    public String buscarProdutoRoleUser(@RequestParam String nome, Model model) {
+        model.addAttribute("produtos", produtoService.buscarPorNome(nome));
+        return "/user/produtos"; // nome da sua página HTML
+    }
+
+    @GetMapping("/user/listprodutos")
+    public String listarProdutosRoleUser(Model model) {
+        List<Produto> produtos = produtoService.buscarTodos();
+        List<Map<String, Object>> produtosComDataFormatada = produtos.stream().map(produto -> {
+            Map<String, Object> produtoMap = Map.of(
+                    "id", produto.getId(),
+                    "nome", produto.getNome(),
+                    "quantidade", produto.getQuantidade(),
+                    "dataValidade", DataUtil.formatarData(produto.getDataValidade())
+            );
+            return produtoMap;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("produtos", produtosComDataFormatada);
+
+        return "/user/produtos";
+    }
+
+    @PostMapping("/user/produtos/entrada/{id}")
+    public String adicionarQuantidadeRoleUser(@PathVariable Long id, @RequestParam int quantidade) {
+        produtoService.adicionarQuantidade(id, quantidade);
+        return "redirect:/user/produtos"; // redireciona para a página de produtos
+    }
+
+    @PostMapping("/user/produtos/saida/{id}")
+    public String subtrairQuantidadeRoleUser(@PathVariable Long id, @RequestParam int quantidade, RedirectAttributes redirectAttributes) {
+        Produto produto = produtoService.findById(id) // Método para buscar o produto
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+        if (quantidade > produto.getQuantidade()) {
+            redirectAttributes.addFlashAttribute("error", "Quantidade a ser subtraída é maior do que a disponível.");
+            return "redirect:/user/produtos"; // redireciona para a página de produtos
+        }
+
+        produtoService.subtrairQuantidade(id, quantidade);
+        redirectAttributes.addFlashAttribute("success", "Quantidade subtraída com sucesso.");
+        return "redirect:/user/produtos"; // redireciona para a página de produtos
+    }
 }

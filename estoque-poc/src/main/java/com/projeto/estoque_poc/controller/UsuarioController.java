@@ -72,12 +72,6 @@ public class UsuarioController {
         return "login";  // Volta para a tela de login com a mensagem de erro
     }
 
-    @GetMapping("/user/produtos")
-    public String produtosUsuario() {
-        // Lógica para exibir os produtos do usuário
-        return "user/produtos";  // Certifique-se de que o template user/produtos.html existe
-    }
-
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
