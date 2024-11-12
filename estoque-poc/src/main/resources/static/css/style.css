@@ -1,3 +1,10 @@
 .bg-dark-custom {
   background-color: #343a40; /* ou uma cor hex que você prefira */
 }
+.suavizar-botao {
+    transition: background-color 0.3s ease;  /* Transição suave para a cor de fundo */
+}
+
+.suavizar-botao:hover {
+    background-color: #e74c3c;  /* Cor de fundo vermelha quando passar o mouse */
+}

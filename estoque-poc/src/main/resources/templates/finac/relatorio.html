@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="shortcut icon" href="/estoque.png">
+    <link href="/estoque.png" rel="shortcut icon">
     <title>Relatórios</title>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -9,28 +9,20 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2 bg-dark text-light vh-100">
+        <div class="col-2 bg-dark-800 text-light vh-100 bg-dark-custom">
             <div class="d-flex align-items-center justify-content-center my-4">
-                <img src="/perfil.png" alt="Ícone de Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
+                <img alt="Ícone de Perfil" src="/perfil2.png" style="width: 40px; height: 40px; border-radius: 50%;">
             </div>
-            <h4 class="my-4 text-center">Bem vindo, @admin</h4>
+            <h4 class="my-4 text-center">Bem vindo, @financeiro</h4>
             <ul class="nav flex-column">
 
                 <li class="nav-item">
-                    <a class="nav-link text-light" th:href="@{/}">◉ Home</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-light" th:href="@{/produtos}">◉ Produtos</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link text-light" th:href="@{/relatorio}">◉ Relatórios</a>
+                    <a class="nav-link text-light" th:href="@{/finac/relatorio}">◉ Relatórios</a>
                 </li>
 
                 <li class="nav-item">
@@ -39,6 +31,51 @@
             </ul>
         </div>
         <div class="col-10">
+
+            <div class="container mt-5">
+                <!-- Primeiro card -->
+                <div class="card mb-4 mt-2">
+                    <div class="card-header text-center">
+                        <h4>Resumo dos Produtos</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-4 d-flex justify-content-center">
+                            <!-- Card 1: Total de Produtos -->
+                            <div class="col-4 col-md-3">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Total de Produtos</h5>
+                                        <p class="card-text" th:text="${totalProdutos}"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Produtos a Vencer -->
+                            <div class="col-4 col-md-3">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Produtos a Vencer</h5>
+                                        <p class="card-text" th:text="${produtosVencer}"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Valor Total -->
+                            <div class="col-4 col-md-3">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Valor Total</h5>
+                                        <p class="card-text" th:text="${valorTotal}"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!--Segundo card-->
             <div class="container mt-5">
                 <!-- Card Principal -->
                 <div class="card">
@@ -47,52 +84,55 @@
                     </div>
                     <div class="card-body">
                         <!-- Primeiro Card -->
-                        <div class="card mb-4">
-                            <div class="card-header">
+                        <div class="card mb-4 mt-4">
+                            <div class="card-header text-center">
                                 <h5 class="mb-0">Relatório Geral</h5>
                             </div>
                             <div class="card-body">
-                                <form class="form-inline" method="get" th:action="@{/gerarRelatorio}">
+                                <form class="form-inline" method="get" th:action="@{/finac/relatorio/gerarRelatorio}">
                                     <div class="form-group">
                                         <label class="mr-2" for="tipo">Tipo de Relatório:</label>
                                         <select class="form-control mr-2" id="tipo" name="tipo">
                                             <option value="">Selecione</option>
-                                            <option th:each="tipo : ${tiposRelatorio}" th:text="${tipo}"
-                                                    th:value="${tipo}"></option>
+                                            <option th:each="tipo : ${tiposRelatorio}" th:text="${tipo}" th:value="${tipo}"></option>
                                         </select>
                                     </div>
                                     <button class="btn btn-primary" type="submit">Gerar Relatório</button>
                                 </form>
-                                <div class="alert alert-danger mt-2" th:if="${errorMessage1}"
-                                     th:text="${errorMessage1}"></div>
+                                <div class="alert alert-danger mt-2" th:if="${errorMessage1}" th:text="${errorMessage1}"></div>
                                 <h4 class="mb-2" th:text="${titulo}"></h4>
 
                                 <!-- Tabela de Relatório -->
-                                <table class="table table-bordered">
-                                    <thead class="thead-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th>Quantidade</th>
-                                        <th>Valor</th>
-                                        <th>Data de Validade</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="produto : ${produtos}">
-<!--                                        <td th:text="${produto.id}"></td>-->
-<!--                                        <td th:text="${produto.nome}"></td>-->
-<!--                                        <td th:text="${produto.quantidade}"></td>-->
-<!--                                        <td th:text="${produto.valor}"></td>-->
-<!--                                        <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>-->
-                                        <td th:text="${produto['id']}"></td>
-                                        <td th:text="${produto['nome']}"></td>
-                                        <td th:text="${produto['quantidade']}"></td>
-                                        <td th:text="${produto['valor']}"></td>
-                                        <td th:text="${produto['dataValidade']}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                <div th:if="${produtos != null}">
+                                    <!-- Alerta Bootstrap se a lista estiver vazia -->
+                                    <div th:if="${produtos.isEmpty()}" class="alert alert-info alert-dismissible fade show" role="alert">
+                                        Não há dados para o relatório selecionado.
+                                    </div>
+
+                                    <!-- Tabela de produtos se a lista não estiver vazia -->
+                                    <div th:if="${!produtos.isEmpty()}">
+                                        <table class="table table-bordered mt-3">
+                                            <thead class="thead-light">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nome</th>
+                                                <th>Quantidade</th>
+                                                <th>Valor</th>
+                                                <th>Data de Validade</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="produto : ${produtos}">
+                                                <td th:text="${produto['id']}"></td>
+                                                <td th:text="${produto['nome']}"></td>
+                                                <td th:text="${produto['quantidade']}"></td>
+                                                <td th:text="${produto['valor']}"></td>
+                                                <td th:text="${produto['dataValidade']}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                 <a class="btn btn-primary mb-2 disabled" id="printLink" target="_blank" href="#">
                                     Imprimir em PDF
                                 </a>
@@ -101,11 +141,11 @@
 
                         <!-- Segundo Card -->
                         <div class="card mt-4">
-                            <div class="card-header">
+                            <div class="card-header text-center">
                                 <h5>Relatório de Vencimento de Produtos</h5>
                             </div>
                             <div class="card-body">
-                                <form th:action="@{/produtos/relatorio-vencimento-proximo}" method="post">
+                                <form th:action="@{/finac/relatorios/produtos/relatorio-vencimento-proximo}" method="post">
                                     <div class="form-group">
                                         <label for="dias">Informe a quantidade de dias para verificar o vencimento:</label>
                                         <div class="input-group">
@@ -117,8 +157,6 @@
                                     </div>
                                 </form>
                                 <div class="alert alert-danger mt-2" th:if="${errorMessage}" th:text="${errorMessage}"></div>
-
-
 
                                 <div th:if="${produtosProximosDoVencimento != null}">
                                     <h4 class="mt-4">Produtos com vencimento nos próximos <span th:text="${dias}"></span> dias:</h4>
@@ -154,17 +192,10 @@
                         </div>
 
                     </div>
-                    <div class="text-right mr-3">
-                        <a class="btn btn-secondary mb-2" href="/">Voltar</a>
-                    </div>
                 </div>
-
             </div>
-
-        </div>
-
-
     </div>
+</div>
 </div>
 
 <script>
