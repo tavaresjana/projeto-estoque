@@ -295,7 +295,7 @@ public class ProdutoController {
         model.addAttribute("totalProdutos", totalProdutos);
         model.addAttribute("produtosVencer", produtosVencer);
 
-        List<Produto> produtos = produtoService.buscarTodos();
+        List<Produto> produtos = produtoService.buscarPorNome(nome);
         List<Map<String, Object>> produtosComDataFormatada = produtos.stream().map(produto -> {
             Map<String, Object> produtoMap = Map.of(
                     "id", produto.getId(),
