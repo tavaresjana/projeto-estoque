@@ -1,163 +1,197 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <link rel="shortcut icon" href="/estoque.png">
   <title>Produtos</title>
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- modal -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+
   <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
+
 <body>
 
-<!-- Mensagens de erro e sucesso -->
+  <!-- Mensagens de erro e sucesso -->
 
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-2 bg-dark-800 text-light vh-100 bg-dark-custom">
-      <div class="d-flex align-items-center justify-content-center my-4">
-        <img src="/perfil3.png" alt="Ícone de Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2 bg-dark-800 text-light vh-100 bg-dark-custom">
+        <div class="d-flex align-items-center justify-content-center my-4">
+          <img src="/perfil3.png" alt="Ícone de Perfil" style="width: 40px; height: 40px; border-radius: 50%;">
+        </div>
+        <h4 class="my-4 text-center">Bem vindo, @user</h4>
+        <ul class="nav flex-column">
+
+          <li class="nav-item">
+            <a class="nav-link text-light" th:href="@{/user/produtos}">◉ Produtos</a>
+          </li>
+
+          <li class="nav-item">
+            <a href="/logout" class="mt-4 nav-link text-light font-bold"> ➦ Sair</a>
+          </li>
+
+        </ul>
       </div>
-      <h4 class="my-4 text-center">Bem vindo, @user</h4>
-      <ul class="nav flex-column">
+      <div class="col-10">
 
-        <li class="nav-item">
-          <a class="nav-link text-light" th:href="@{/user/produtos}">◉ Produtos</a>
-        </li>
-
-        <li class="nav-item">
-          <a href="/logout" class="mt-4 nav-link text-light font-bold"> ➦ Sair</a>
-        </li>
-
-      </ul>
-    </div>
-    <div class="col-10">
-
-      <div class="container mt-5">
-        <!-- Card de Resumo dos Produtos -->
-        <div class="card mb-4 mt-2">
-          <div class="card-header text-center">
-            <h4>Resumo dos Produtos</h4>
-          </div>
-          <div class="card-body">
-            <div class="row mb-4 d-flex justify-content-center">
-              <!-- Card 1: Total de Produtos -->
-              <div class="col-4 col-md-3">
-                <div class="card text-center">
-                  <div class="card-body">
-                    <h5 class="card-title">Total de Produtos</h5>
-                    <p class="card-text" th:text="${totalProdutos}"></p>
+        <div class="container mt-5">
+          <!-- Card de Resumo dos Produtos -->
+          <div class="card mb-4 mt-2">
+            <div class="card-header text-center">
+              <h4>Resumo dos Produtos</h4>
+            </div>
+            <div class="card-body">
+              <div class="row mb-4 d-flex justify-content-center">
+                <!-- Card 1: Total de Produtos -->
+                <div class="col-4 col-md-3">
+                  <div class="card text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Total de Produtos</h5>
+                      <p class="card-text" th:text="${totalProdutos}"></p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Card 2: Produtos a Vencer -->
-              <div class="col-4 col-md-3">
-                <div class="card text-center">
-                  <div class="card-body">
-                    <h5 class="card-title">Produtos a Vencer</h5>
-                    <p class="card-text" th:text="${produtosVencer}"></p>
+                <!-- Card 2: Produtos a Vencer -->
+                <div class="col-4 col-md-3">
+                  <div class="card text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Produtos a Vencer</h5>
+                      <p class="card-text" th:text="${produtosVencer}"></p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Card 3: Estoque Baixo -->
-              <div class="col-4 col-md-3">
-                <div class="card text-center">
-                  <div class="card-body">
-                    <h5 class="card-title">Estoque Baixo</h5>
-                    <p class="card-text" th:text="${estoqueBaixo}"></p>
+                <!-- Card 3: Estoque Baixo -->
+                <div class="col-4 col-md-3">
+                  <div class="card text-center">
+                    <div class="card-body">
+                      <h5 class="card-title">Estoque Baixo</h5>
+                      <p class="card-text" th:text="${estoqueBaixo}"></p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
 
-      <div class="container mt-5">
-        <div class="card">
-          <div class="card-header">
-            <h4 class="mb-0">Lista de Produtos</h4>
-          </div>
-          <div class="card-body">
-            <form action="#" class="form-inline mb-4" method="get" th:action="@{/user/produtos/buscar}">
-              <input class="form-control mr-2" name="nome" placeholder="Pesquisar por nome" required type="text">
-              <button class="btn btn-primary" type="submit">Buscar</button>
-              <a class="btn btn-danger ml-2" href="/user/produtos">X</a>
-            </form>
-
-            <table class="table table-bordered">
-              <thead class="thead-light">
-              <tr>
-                <th>Nome</th>
-                <th>Quantidade</th>
-                <th>Valor</th>
-                <th>Data de Validade</th>
-                <th>Entradas/Saídas</th>
-                <th>Ações</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr th:each="produto : ${produtos}">
-
-                <td th:text="${produto['nome']}"></td>
-                <td th:text="${produto['quantidade']}"></td>
-                <td th:text="${produto['valor']}"></td>
-                <td th:text="${produto['dataValidadeFormatada']}"></td>
-                <td>
-                  <form th:action="@{/user/produtos/entrada/{id}(id=${produto.id})}" method="post" class="d-inline">
-                    <input type="number" style="width: 50px;" name="quantidade" min="0" placeholder="0" required>
-                    <button class="btn btn-success btn-sm" type="submit">+</button>
-                  </form>
-
-                  <!-- Formulário para saída de produtos -->
-                  <form th:action="@{/user/produtos/saida/{id}(id=${produto.id})}" method="post" class="d-inline">
-                    <input type="number" style="width: 50px;" name="quantidade" min="0" placeholder="0" required>
-                    <button class="btn btn-danger btn-sm" type="submit">-</button>
-                  </form>
-                </td>
-                <td>
-                  <a class="btn btn-primary btn-sm" th:href="@{/user/produtos/editar/{id}(id=${produto.id})}">Editar</a>
-                  <a class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este produto?');"
-                     th:href="@{/user/produtos/excluir/{id}(id=${produto.id})}">Excluir</a>
-                </td>
-              </tr>
-              </tbody>
-            </table>
-
-            <div>
-              <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
-                <span th:text="${error}"></span>
-                <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-
-              <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
-                <span th:text="${success}"></span>
-                <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-
-
+        <div class="container mt-5">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="mb-0">Lista de Produtos</h4>
             </div>
+            <div class="card-body">
+              <form action="#" class="form-inline mb-4" method="get" th:action="@{/user/produtos/buscar}">
+                <input class="form-control mr-2" name="nome" placeholder="Pesquisar por nome" required type="text">
+                <button class="btn btn-primary" type="submit">Buscar</button>
+                <a class="btn btn-danger ml-2" href="/user/produtos">X</a>
+              </form>
 
-            <div class="mb-3">
-              <a class="btn btn-success mb-2" href="/user/produtos/novo">Adicionar Novo Produto</a>
-              <a class="btn btn-secondary mb-2" href="/user/produtos">Voltar</a>
+              <table class="table table-bordered">
+                <thead class="thead-light">
+                  <tr>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Valor</th>
+                    <th>Data de Validade</th>
+                    <th>Entradas/Saídas</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr th:each="produto : ${produtos}">
+
+                    <td th:text="${produto['nome']}"></td>
+                    <td th:text="${produto['quantidade']}"></td>
+                    <td th:text="${produto['valor']}"></td>
+                    <td th:text="${produto['dataValidadeFormatada']}"></td>
+                    <td>
+                      <form th:action="@{/user/produtos/entrada/{id}(id=${produto.id})}" method="post" class="d-inline">
+                        <input type="number" style="width: 50px;" name="quantidade" min="0" placeholder="0" required>
+                        <button class="btn btn-success btn-sm" type="submit">+</button>
+                      </form>
+
+                      <!-- Formulário para saída de produtos -->
+                      <form th:action="@{/user/produtos/saida/{id}(id=${produto.id})}" method="post" class="d-inline">
+                        <input type="number" style="width: 50px;" name="quantidade" min="0" placeholder="0" required>
+                        <button class="btn btn-danger btn-sm" type="submit">-</button>
+                      </form>
+                    </td>
+                    <td>
+                      <a class="btn btn-primary btn-sm" th:href="@{/user/produtos/editar/{id}(id=${produto.id})}">Editar</a>
+                      <a href="#" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" th:onclick="'setDeleteId(\'' + ${produto.id} + '\')'">
+                        Excluir
+                      </a>
+                      <!-- modal -->
+                      <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmar Exclusão</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Tem certeza que deseja excluir este produto?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                              <a href="#" class="btn btn-danger" id="confirmDeleteBtn">Excluir</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div>
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show">
+                  <span th:text="${error}"></span>
+                  <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show">
+                  <span th:text="${success}"></span>
+                  <button type="button" class="close" aria-label="Close" onclick="this.parentElement.style.display='none';">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+
+
+              </div>
+
+              <div class="mb-3">
+                <a class="btn btn-success mb-2" href="/user/produtos/novo">Adicionar Novo Produto</a>
+                <a class="btn btn-secondary mb-2" href="/user/produtos">Voltar</a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
+      </div>
     </div>
   </div>
-</div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <!-- modal -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function setDeleteId(id) {
+      document.getElementById('confirmDeleteBtn').href = '/produtos/excluir/' + id;
+    }
+  </script>
 </body>
+
 </html>
