@@ -190,7 +190,6 @@ public class ProdutoController {
         return "relatorio";
     }
 
-
     @GetMapping("/produtos/buscar")
     public String buscarProduto(@RequestParam String nome, Model model) {
         model.addAttribute("produtos", produtoService.buscarPorNome(nome));
