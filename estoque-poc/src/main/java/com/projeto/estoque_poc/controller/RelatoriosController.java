@@ -263,20 +263,33 @@ public class RelatoriosController {
     }
 
     @GetMapping("/finac/relatorios/gerar-pdf")
-    public ResponseEntity<byte[]> gerarPdfFinac(@RequestParam String tipo) {
+    public ResponseEntity<?> gerarPdfFinac(@RequestParam String tipo) {
+
         ByteArrayOutputStream pdfStream;
         switch (tipo) {
             case "Vencimento Próximos 30 Dias":
                 pdfStream = relatoriosService.gerarPdfProdutosVencimentoProximo30Dias();
+                if (pdfStream == null) {
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                            .body("Não há dados para o relatório de produtos com vencimento nos próximos 30 dias.");
+                }
                 break;
             case "Produtos Vencidos":
                 pdfStream = relatoriosService.gerarPdfProdutosVencidos();
+                if (pdfStream == null) {
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                            .body("Não há dados para o relatório de produtos vencidos.");
+                }
                 break;
             case "Estoque Baixo":
                 pdfStream = relatoriosService.gerarPdfProdutosEstoqueBaixo();
+                if (pdfStream == null) {
+                    return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                            .body("Não há dados para o relatório de produtos com estoque baixo.");
+                }
                 break;
             default:
-                return ResponseEntity.badRequest().build();
+                return ResponseEntity.badRequest().body("Tipo de relatório inválido.");
         }
 
         byte[] pdfBytes = pdfStream.toByteArray();
@@ -331,4 +344,5 @@ public class RelatoriosController {
 
         return "/finac/relatorio";
     }
+
 }

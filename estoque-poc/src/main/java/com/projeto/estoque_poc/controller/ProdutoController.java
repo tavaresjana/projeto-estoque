@@ -83,6 +83,7 @@ public class ProdutoController {
                     "id", produto.getId(),
                     "nome", produto.getNome(),
                     "quantidade", produto.getQuantidade(),
+                    "valor", produto.getValor(),
                     "dataValidade", DataUtil.formatarData(produto.getDataValidade())
             );
             return produtoMap;
@@ -189,7 +190,6 @@ public class ProdutoController {
         return "relatorio";
     }
 
-
     @GetMapping("/produtos/buscar")
     public String buscarProduto(@RequestParam String nome, Model model) {
         model.addAttribute("produtos", produtoService.buscarPorNome(nome));
@@ -285,23 +285,36 @@ public class ProdutoController {
     @GetMapping("/user/produtos/buscar")
     public String buscarProdutoRoleUser(@RequestParam String nome, Model model) {
         model.addAttribute("produtos", produtoService.buscarPorNome(nome));
+        List<Produto> produtos = produtoService.buscarPorNome(nome);
+        formatarDataEAdicionarModelo(produtos, model);
+
+        int totalProdutos = produtoService.contarTotalProdutos();
+        int produtosVencer = produtoService.contarProdutosAVencer();
+        int estoqueBaixo = produtoService.contarEstoqueBaixo();
+
+        // Adiciona as informações do dashboard ao modelo
+        model.addAttribute("estoqueBaixo", estoqueBaixo);
+        model.addAttribute("totalProdutos", totalProdutos);
+        model.addAttribute("produtosVencer", produtosVencer);
+
+
         return "/user/produtos"; // nome da sua página HTML
     }
 
     @GetMapping("/user/listprodutos")
     public String listarProdutosRoleUser(Model model) {
         List<Produto> produtos = produtoService.buscarTodos();
-        List<Map<String, Object>> produtosComDataFormatada = produtos.stream().map(produto -> {
-            Map<String, Object> produtoMap = Map.of(
-                    "id", produto.getId(),
-                    "nome", produto.getNome(),
-                    "quantidade", produto.getQuantidade(),
-                    "dataValidade", DataUtil.formatarData(produto.getDataValidade())
-            );
-            return produtoMap;
-        }).collect(Collectors.toList());
 
-        model.addAttribute("produtos", produtosComDataFormatada);
+        formatarDataEAdicionarModelo(produtos, model);
+
+        int totalProdutos = produtoService.contarTotalProdutos();
+        int produtosVencer = produtoService.contarProdutosAVencer();
+        int estoqueBaixo = produtoService.contarEstoqueBaixo();
+
+        // Adiciona as informações do dashboard ao modelo
+        model.addAttribute("estoqueBaixo", estoqueBaixo);
+        model.addAttribute("totalProdutos", totalProdutos);
+        model.addAttribute("produtosVencer", produtosVencer);
 
         return "/user/produtos";
     }
@@ -325,5 +338,20 @@ public class ProdutoController {
         produtoService.subtrairQuantidade(id, quantidade);
         redirectAttributes.addFlashAttribute("success", "Quantidade subtraída com sucesso.");
         return "redirect:/user/produtos"; // redireciona para a página de produtos
+    }
+
+    private void formatarDataEAdicionarModelo(List<Produto> produtos, Model model){
+        List<Map<String, Object>> produtosComDataFormatada = produtos.stream().map(produto -> {
+            Map<String, Object> produtoMap = Map.of(
+                    "id", produto.getId(),
+                    "nome", produto.getNome(),
+                    "quantidade", produto.getQuantidade(),
+                    "valor", produto.getValor(),
+                    "dataValidade", DataUtil.formatarData(produto.getDataValidade())
+            );
+            return produtoMap;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("produtos", produtosComDataFormatada);
     }
 }

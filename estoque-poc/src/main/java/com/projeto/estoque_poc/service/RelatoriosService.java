@@ -45,6 +45,11 @@ public class RelatoriosService {
     }
 
     private ByteArrayOutputStream gerarPdf(List<Produto> produtos) {
+
+        if (produtos == null || produtos.isEmpty()) {
+            return null; // Retorna null se a lista estiver vazia
+        }
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         Document document = new Document();
         try {

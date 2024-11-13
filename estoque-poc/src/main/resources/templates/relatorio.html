@@ -68,34 +68,44 @@
                                 <h4 class="mb-2" th:text="${titulo}"></h4>
 
                                 <!-- Tabela de Relatório -->
-                                <table class="table table-bordered">
-                                    <thead class="thead-light">
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Nome</th>
-                                        <th>Quantidade</th>
-                                        <th>Valor</th>
-                                        <th>Data de Validade</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="produto : ${produtos}">
-<!--                                        <td th:text="${produto.id}"></td>-->
-<!--                                        <td th:text="${produto.nome}"></td>-->
-<!--                                        <td th:text="${produto.quantidade}"></td>-->
-<!--                                        <td th:text="${produto.valor}"></td>-->
-<!--                                        <td th:text="${produto.dataValidade != null ? produto.dataValidade.toString() : 'N/A'}"></td>-->
-                                        <td th:text="${produto['id']}"></td>
-                                        <td th:text="${produto['nome']}"></td>
-                                        <td th:text="${produto['quantidade']}"></td>
-                                        <td th:text="${produto['valor']}"></td>
-                                        <td th:text="${produto['dataValidade']}"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                <div th:if="${produtos != null}">
+                                    <!-- Alerta Bootstrap se a lista estiver vazia -->
+                                    <div th:if="${produtos.isEmpty()}" class="alert alert-info alert-dismissible fade show" role="alert">
+                                        Não há dados para o relatório selecionado.
+                                    </div>
+
+                                    <!-- Tabela de produtos se a lista não estiver vazia -->
+                                    <div th:if="${!produtos.isEmpty()}">
+                                        <table class="table table-bordered mt-3">
+                                            <thead class="thead-light">
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nome</th>
+                                                <th>Quantidade</th>
+                                                <th>Valor</th>
+                                                <th>Data de Validade</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="produto : ${produtos}">
+                                                <td th:text="${produto['id']}"></td>
+                                                <td th:text="${produto['nome']}"></td>
+                                                <td th:text="${produto['quantidade']}"></td>
+                                                <td th:text="${produto['valor']}"></td>
+                                                <td th:text="${produto['dataValidade']}"></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                                 <a class="btn btn-primary mb-2 disabled" id="printLink" target="_blank" href="#">
-                                    Imprimir em PDF
+                                    Imprimir PDF
                                 </a>
+                                <div id="errorMessage" class="alert alert-info alert-dismissible fade show" role="alert" style="display: none;">
+                                    Não há dados para o relatório selecionado.
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                             </div>
                         </div>
 
@@ -166,7 +176,7 @@
 
     </div>
 </div>
-
+</div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const selectTipo = document.getElementById("tipo");
@@ -183,6 +193,16 @@
             }
         });
     });
+
+        document.getElementById("printLink").addEventListener("click", function(event) {
+    // Aqui você verifica se há dados, por exemplo, se a lista de produtos estiver vazia
+    let produtos = []; // Substitua por sua lista de produtos, ou uma condição que você tenha
+
+    if (produtos.length === 0) {
+        event.preventDefault(); // Impede o redirecionamento do link
+        document.getElementById("errorMessage").style.display = "block"; // Exibe a mensagem de erro
+    }
+});
 </script>
 </body>
 </html>
