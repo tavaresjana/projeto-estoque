@@ -75,23 +75,6 @@ Este projeto visa facilitar a gestão de produtos em estoque, com funcionalidade
      \`\`\`
    - Utilize as credenciais configuradas no `application.properties` para acessar.
 
-## Estrutura do Projeto
-
-\`\`\`
-/estoque-poc
-├── .idea/                # Configurações de projeto do IntelliJ IDEA
-├── .mvn/wrapper/         # Arquivos do Maven Wrapper
-├── src/                  # Código-fonte do projeto
-│   ├── main/
-│   │   ├── java/         # Código Java
-│   │   └── resources/    # Arquivos de recursos, como templates e application.properties
-├── target/               # Arquivos compilados
-├── HELP.md               # Arquivo de ajuda adicional
-├── mvnw                  # Script Maven Wrapper para Unix
-├── mvnw.cmd              # Script Maven Wrapper para Windows
-└── pom.xml               # Arquivo de configuração do Maven
-\`\`\`
-
 ## Contribuição
 
 Contribuições são bem-vindas! Para contribuir com este projeto:
