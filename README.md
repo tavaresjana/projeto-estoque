@@ -34,45 +34,45 @@ Este projeto visa facilitar a gestão de produtos em estoque, com funcionalidade
 ## Instalação e Configuração
 
 1. **Clone o repositório para sua máquina local**:
-   \`\`\`bash
+   
    git clone https://github.com/seu-usuario/projeto-estoque.git
    cd projeto-estoque/estoque-poc
-   \`\`\`
+   
 
-2. **Configure o projeto**:
+3. **Configure o projeto**:
    - Certifique-se de ter o Java JDK 11 (ou versão compatível) instalado.
    - Verifique se o Maven está instalado e configurado corretamente em seu sistema.
 
-3. **Compilar o projeto**:
+4. **Compilar o projeto**:
    - Navegue até o diretório raiz do projeto e execute o comando:
-     \`\`\`bash
+  
      mvn clean install
-     \`\`\`
+     
    - Isso fará a compilação do projeto e baixará todas as dependências necessárias.
 
 ## Como Executar o Projeto
 
 1. **Execute o projeto com Maven**:
-   \`\`\`bash
+
    mvn spring-boot:run
-   \`\`\`
+
 
    - Ou, execute o arquivo `.jar` gerado na pasta `target`:
-     \`\`\`bash
+
      java -jar target/nome-do-arquivo.jar
-     \`\`\`
+
 
 2. **Acesse a aplicação**:
    - A aplicação estará disponível em:
-     \`\`\`
+
      http://localhost:8080
-     \`\`\`
+
 
 3. **Console do Banco de Dados H2**:
    - Acesse o console H2 em:
-     \`\`\`
+
      http://localhost:8080/h2-console
-     \`\`\`
+
    - Utilize as credenciais configuradas no `application.properties` para acessar.
 
 ## Contribuição
