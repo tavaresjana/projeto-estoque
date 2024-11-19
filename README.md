@@ -87,7 +87,7 @@ Contribuições são bem-vindas! Para contribuir com este projeto:
 
 ## Autores
 
-- **Janaina Conceicao Tavares da Silva** - *Desenvolvedora principal* - [GitHub](https://github.com/seu-usuario](https://github.com/tavaresjana))
+- **Janaina Conceicao Tavares da Silva** - *Desenvolvedora principal* - [GitHub](https://github.com/tavaresjana))
 - **Matheus Mauricio** - *Designer*
 - **Cezar Navoscone Roman** - *Documentação* - [GitHub](https://github.com/aRandomITguy)
 - **Sebastião Barbosa Pereira Junior** - *Documentação*
