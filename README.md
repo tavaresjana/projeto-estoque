@@ -87,11 +87,11 @@ Contribuições são bem-vindas! Para contribuir com este projeto:
 
 ## Autores
 
-- **Janaina Conceicao Tavares da Silva** - *Desenvolvedora principal* - [GitHub](https://github.com/tavaresjana))
-- **Matheus Mauricio** - *Designer*
+- **Janaina Conceicao Tavares da Silva** - *Desenvolvedora principal* - [GitHub](https://github.com/tavaresjana)
+- **Matheus Mauricio** - *Designer* - [GitHub](https://github.com/matheusmauriciom)
 - **Cezar Navoscone Roman** - *Documentação* - [GitHub](https://github.com/aRandomITguy)
-- **Sebastião Barbosa Pereira Junior** - *Documentação*
-- **Ricardo Pereira Rodrigues** - *Coffe Drinker*
+- **Sebastião Barbosa Pereira Junior** - *Documentação* 
+- **Ricardo Pereira Rodrigues** - *Documentação* - [GitHub](https://github.com/rrodrigues345)
 
 
 ## Agradecimentos
