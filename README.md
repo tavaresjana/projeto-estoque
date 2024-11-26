@@ -1,7 +1,7 @@
 
 # Projeto de Estoque - POC
 
-Este projeto é uma prova de conceito (POC) para a gestão de estoque. Ele foi desenvolvido como parte de um projeto acadêmico, com o objetivo de gerenciar produtos, suas quantidades e gerar relatórios em PDF. 
+Nosso projeto visa facilitar a gestão de produtos em estoque, incluindo para isso funcionalidades como cadastro de novos produtos, remoção e adição de produtos além da exportação de relatórios em PDF e importação de planilhas. 
 
 ## Índice
 
@@ -87,11 +87,12 @@ Contribuições são bem-vindas! Para contribuir com este projeto:
 
 ## Autores
 
+- **Cezar Navoscone Roman** - *Documentação* - [GitHub](https://github.com/aRandomITguy)
 - **Janaina Conceicao Tavares da Silva** - *Desenvolvedora principal* - [GitHub](https://github.com/tavaresjana)
 - **Matheus Mauricio** - *Designer* - [GitHub](https://github.com/matheusmauriciom)
-- **Cezar Navoscone Roman** - *Documentação* - [GitHub](https://github.com/aRandomITguy)
-- **Sebastião Barbosa Pereira Junior** - *Documentação* 
 - **Ricardo Pereira Rodrigues** - *Documentação* - [GitHub](https://github.com/rrodrigues345)
+- **Sebastião Barbosa Pereira Junior** - *Documentação* 
+
 
 
 ## Agradecimentos
